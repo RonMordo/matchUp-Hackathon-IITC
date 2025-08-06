@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import axios from "axios";
-import type { User, UserResponse } from "@/types/index";
+import type { UserResponse } from "@/types/index";
 import Services from "@/services";
 
 interface AuthContextType {
@@ -21,15 +21,14 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<Omit<User, "password"> | null>(null);
+  const [user, setUser] = useState<UserResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const authService = Services.Auth;
 
   //CheckAuth
   const checkAuth = async () => {
     try {
-      const response = await authService.getMe();
-      const user = response.data;
+      const user = await authService.getMe() as unknown as UserResponse;
       setUser(user);
     } catch (error) {
       console.error("Auth check failed", error);
@@ -42,8 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   //signIn
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const response = await authService.login(email, password);
-      const user = response.data;
+      const user = await authService.login(email, password) as unknown as UserResponse;
       setUser(user);
       return true;
     } catch (error) {
@@ -53,10 +51,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   //SignUp
-  const register = async (name: string, phone: string, email: string, password: string): Promise<boolean> => {
+  const register = async (name: string, password: string, phone: string, email: string): Promise<boolean> => {
     try {
-      const response = await authService.register(name, phone, email, password);
-      const user = response.data;
+      const user = await authService.register({ name, phone, email, password }) as unknown as UserResponse;
       console.log(user);
       setUser(user);
       return true;

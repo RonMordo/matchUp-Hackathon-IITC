@@ -46,8 +46,6 @@ axiosInstance.interceptors.response.use(
     ) {
       document.cookie = "token=; Max-Age=0; path=/";
       localStorage.clear();
-
-      window.location.href = "/signin";
     }
 
     console.error("API Error:", error.response?.data || error.message);

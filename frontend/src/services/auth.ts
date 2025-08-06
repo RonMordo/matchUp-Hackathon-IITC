@@ -2,7 +2,17 @@ import axiosInstance from "../utils/axiosInstance";
 
 // Authentication Service
 export const AuthService = {
-  register: async (name: string, phone: string, email: string, password: string) => {
+  register: async ({
+    name,
+    phone,
+    email,
+    password,
+  }: {
+    name: string;
+    phone: string;
+    email: string;
+    password: string;
+  }) => {
     return await axiosInstance.post("/auth/register", {
       name,
       phone,

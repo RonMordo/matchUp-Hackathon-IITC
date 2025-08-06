@@ -6,5 +6,5 @@ export function ProtectRoutes() {
 
   if (loading) return <div className="p-10 text-center">loading...</div>;
 
-  return user ? <Outlet /> : <Navigate to="/login" replace />;
+  return user ? <Outlet /> : <Navigate to="/auth/signin" replace />;
 }
