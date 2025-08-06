@@ -1,24 +1,25 @@
+import type { Control, ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import {
   FormField,
   FormItem,
   FormLabel,
   FormControl,
   FormDescription,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-interface FormFieldWrapperProps {
-  control: any;
-  name: string;
+interface FormFieldWrapperProps<TFieldValues extends FieldValues = FieldValues> {
+  control: Control<TFieldValues>;
+  name: Path<TFieldValues>;
   label: string;
   description?: string;
   type?: string;
   placeholder?: string;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+  render?: (field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>) => React.ReactNode;
 }
 
-export function FormFieldWrapper({
+export function FormFieldWrapper<TFieldValues extends FieldValues = FieldValues>({
   control,
   name,
   label,
@@ -26,29 +27,40 @@ export function FormFieldWrapper({
   type = "text",
   placeholder,
   inputProps = {},
-}: FormFieldWrapperProps) {
+  render,
+}: FormFieldWrapperProps<TFieldValues>) {
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field, fieldState }) => (
+      render={({
+        field,
+        fieldState,
+      }: {
+        field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>;
+        fieldState: { error?: { message?: string } };
+      }) => (
         <FormItem className="space-y-2">
           <FormLabel className="block text-sm font-semibold text-gray-800 dark:text-gray-200">
             {label}
           </FormLabel>
 
           <FormControl>
-            <Input
-              type={type}
-              placeholder={placeholder}
-              {...field}
-              {...inputProps}
-              className={`w-full rounded-xl px-4 py-2 text-sm transition-all duration-200 border focus:ring-2 focus:outline-none focus:ring-indigo-500 dark:bg-gray-800 dark:text-white ${
-                fieldState.error
-                  ? "border-red-500 bg-red-50 dark:bg-red-950"
-                  : "border-gray-300 dark:border-gray-700"
-              }`}
-            />
+            {render ? (
+              render(field)
+            ) : (
+              <Input
+                type={type}
+                placeholder={placeholder}
+                {...field}
+                {...inputProps}
+                className={`w-full rounded-xl px-4 py-2 text-sm transition-all duration-200 border focus:ring-2 focus:outline-none focus:ring-indigo-500 dark:bg-gray-800 dark:text-white ${
+                  fieldState.error
+                    ? "border-red-500 bg-red-50 dark:bg-red-950"
+                    : "border-gray-300 dark:border-gray-700"
+                }`}
+              />
+            )}
           </FormControl>
 
           {description && (
@@ -57,7 +69,11 @@ export function FormFieldWrapper({
             </FormDescription>
           )}
 
-          <FormMessage className="text-sm text-black dark:text-white font-medium" />
+          {fieldState.error?.message && (
+            <p className="text-sm text-red-600 dark:text-red-400 font-medium">
+              {fieldState.error.message}
+            </p>
+          )}
         </FormItem>
       )}
     />

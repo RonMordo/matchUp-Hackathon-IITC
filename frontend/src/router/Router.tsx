@@ -35,6 +35,7 @@ export const Router = createBrowserRouter([
     ],
   },
 
+
   // Catch-all route for any other invalid paths
   { path: "*", element: <Navigate to="/auth/signin" replace /> },
 ]);
