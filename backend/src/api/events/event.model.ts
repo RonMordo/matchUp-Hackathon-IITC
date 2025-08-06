@@ -14,6 +14,7 @@ const eventSchema = new Schema<EventDocument, IEventModel>(
     },
     creator: {
       type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
       unique: true,
     },
@@ -46,11 +47,13 @@ const eventSchema = new Schema<EventDocument, IEventModel>(
     },
     acceptedParticipants: {
       type: [Schema.Types.ObjectId],
+      ref: "User",
       required: true,
       default: [],
     },
     pendingParticipants: {
       type: [Schema.Types.ObjectId],
+      ref: "User",
       required: true,
       default: [],
     },
@@ -66,8 +69,6 @@ const eventSchema = new Schema<EventDocument, IEventModel>(
   },
   {
     timestamps: true,
-    toObject: { virtuals: true },
-    toJSON: { virtuals: true },
   }
 );
 
