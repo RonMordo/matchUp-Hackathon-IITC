@@ -21,11 +21,13 @@ import { mockEvents } from "../data/mockData";
 
 import { EventCard } from "../components/EventCard";
 import type { Event } from "../components/EventCard";
+import { CreateEventForm } from "../components/forms/CreateEventForm"; // נתיב נכון לטופס
 
 export function EventsPage() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [eventToDelete, setEventToDelete] = useState<string | null>(null);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   const {
     data: events = [],
@@ -80,7 +82,7 @@ export function EventsPage() {
         </h1>
 
         {user && (
-          <Dialog>
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
             <DialogTrigger asChild>
               <Button
                 className="bg-gradient-to-r from-pink-600 to-yellow-400 hover:from-pink-500 hover:to-yellow-300 text-white px-8 py-4 rounded-full shadow-xl flex items-center gap-4 font-semibold tracking-wide text-lg transition-transform transform hover:scale-110 active:scale-95"
@@ -96,7 +98,11 @@ export function EventsPage() {
                   Add a New Event
                 </DialogTitle>
               </DialogHeader>
-              {/* AddEventForm goes here */}
+
+              {/* כאן מכניסים את טופס יצירת האירוע */}
+              <CreateEventForm
+                onClose={() => setIsCreateOpen(false)}
+              />
             </DialogContent>
           </Dialog>
         )}

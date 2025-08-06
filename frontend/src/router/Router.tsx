@@ -28,11 +28,13 @@ export const Router = createBrowserRouter([
           { index: true, element: <HomePage /> },
           { path: "/events/map", element: <EventMap /> },
           { path: "/events/", element: <EventsPage /> },
+          //{path: "/events/:id", element: <EventsPage /> },
           //{ path: "/recipes/:id/update-recipe", element: <UpdateRecipePage /> },
         ],
       },
     ],
   },
+
 
   // Catch-all route for any other invalid paths
   { path: "*", element: <Navigate to="/auth/signin" replace /> },
