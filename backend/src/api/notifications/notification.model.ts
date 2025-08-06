@@ -6,7 +6,7 @@ import {
 
 const notificationSchema = new Schema<NotificationDocument, INotificationModel>(
   {
-    user: {
+    recipient: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,

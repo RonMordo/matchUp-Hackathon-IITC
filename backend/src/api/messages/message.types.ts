@@ -1,7 +1,6 @@
 import { HydratedDocument, Model, Types } from "mongoose";
 
 export interface IMessage {
-  sender: Types.ObjectId;
   recipient: Types.ObjectId;
   event: Types.ObjectId;
   subject: string;

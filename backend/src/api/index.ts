@@ -16,7 +16,7 @@ router.use("/auth", authRouter);
 router.use("/events", eventRouter);
 router.use("/hobbies", hobbyRouter);
 router.use("/messages", messageRouter);
-router.use("/notification", notificationRouter);
+router.use("/notifications", notificationRouter);
 router.use("/ratings", ratingRouter);
 
 export default router;
