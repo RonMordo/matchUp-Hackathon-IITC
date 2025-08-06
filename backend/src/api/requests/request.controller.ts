@@ -33,6 +33,22 @@ const getRequestById = async (
   }
 };
 
+const createRequest = async (
+  req: AuthenticatedRequest<IdParams, {}, CreateRequestInput>,
+  res: Response<IRequest>,
+  next: NextFunction
+) => {
+  try {
+    const newRequest = await requestService.createRequest(req.body);
+    const savedRequest = await requestService.getRequestById(
+      newRequest._id.toString()
+    );
+    return res.status(201).json(savedRequest);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const updateRequest = async (
   req: AuthenticatedRequest<IdParams, {}, CreateRequestInput>,
   res: Response<IRequest>,
@@ -81,6 +97,7 @@ const deleteRequest = async (
 export const requestController = {
   getAllRequests,
   getRequestById,
+  createRequest,
   updateRequest,
   patchRequest,
   deleteRequest,
