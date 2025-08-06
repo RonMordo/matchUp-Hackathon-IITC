@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/register";
+import RegisterForm from "@/components/forms/RegisterForm";
 import { Link } from "react-router";
 import { Sparkles } from "lucide-react";
 
@@ -13,9 +13,7 @@ export function RegistrationPage() {
           <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight mt-2">
             Create an Account
           </h1>
-          <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">
-            Sign up and start your journey with us!
-          </p>
+          <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">Sign up and start your journey with us!</p>
         </div>
 
         <div className="transition duration-500 ease-in-out">

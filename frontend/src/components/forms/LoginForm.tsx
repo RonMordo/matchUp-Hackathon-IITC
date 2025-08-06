@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "./ui/form";
-import { FormFieldWrapper } from "./forms/FormFieldWrapper";
-import { Card, CardContent } from "./ui/card";
+import { Form } from "../ui/form";
+import { FormFieldWrapper } from "./FormFieldWrapper";
+import { Card, CardContent } from "../ui/card";
 import { FcGoogle } from "react-icons/fc";
-import { OtpVerificationForm } from "./auth/OtpVerificationForm";
+import { OtpVerificationForm } from "../auth/OtpVerificationForm";
 import { z } from "zod";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router";

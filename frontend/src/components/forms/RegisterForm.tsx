@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Button } from "./ui/button";
-import { Form } from "./ui/form";
-import { FormFieldWrapper } from "./forms/FormFieldWrapper";
-import { Card, CardContent } from "./ui/card";
-import { OtpVerificationForm } from "./auth/OtpVerificationForm";
+import { Button } from "../ui/button";
+import { Form } from "../ui/form";
+import { FormFieldWrapper } from "../forms/FormFieldWrapper";
+import { Card, CardContent } from "../ui/card";
+import { OtpVerificationForm } from "../auth/OtpVerificationForm";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -15,10 +15,7 @@ import { AuthService } from "@/services";
 
 export const registerSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  email: z
-    .string()
-    .email("Invalid email address")
-    .min(1, { message: "Email is required" }),
+  email: z.string().email("Invalid email address").min(1, { message: "Email is required" }),
   phoneNumber: z
     .string()
     .regex(/^05\d{8}$/, "Phone number must be Israeli (e.g. 05XXXXXXXX)")
@@ -37,7 +34,7 @@ function RegisterForm() {
   const navigate = useNavigate();
   const [otpStep, setOtpStep] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-  
+
   const registerMutation = useMutation({
     mutationFn: async (values: RegisterSchema) => {
       const res = await AuthService.register({
@@ -50,10 +47,9 @@ function RegisterForm() {
     },
     onSuccess: (data) => {
       console.log("✅ Registration successful", data);
-      // Add null check and provide fallback values
       const requiresOtp = data?.requiresOtp || false;
       const userId = data?.userId || data?.id || null;
-      
+
       if (requiresOtp && userId) {
         setOtpStep(true);
         setUserId(userId);
@@ -62,7 +58,6 @@ function RegisterForm() {
       }
     },
     onError: (err: any) => {
-      // Set error as root error instead of on specific field
       form.setError("root", { type: "manual", message: err?.response?.data?.message || "Registration failed" });
     },
   });

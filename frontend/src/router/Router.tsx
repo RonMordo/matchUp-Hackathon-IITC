@@ -5,6 +5,7 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { ProtectRoutes } from "./ProtectRoutes";
 import { HomePage } from "@/pages/HomePage";
 import EventMap from "@/pages/EventMapPage";
+import { EventsPage } from "@/pages/EventsPage";
 
 export const Router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ export const Router = createBrowserRouter([
         children: [
           { index: true, element: <HomePage /> },
           { path: "/events/map", element: <EventMap /> },
-          //{ path: "/recipes/create-recipe", element: <CreateRecipeForm /> },
+          { path: "/events/", element: <EventsPage /> },
           //{ path: "/recipes/:id/update-recipe", element: <UpdateRecipePage /> },
         ],
       },
