@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { NavLink, useNavigate } from "react-router";
-//import Logo from "../../../public/Images/Logo.png";
+import Logo from "@/img/logo.png";
 import { ModeToggle } from "./ToggleTheme";
 
 type NavbarProps = {};
@@ -17,7 +17,9 @@ export const Navbar = ({}: NavbarProps) => {
   return (
     <nav className=" text-orange-400 fixed top-0 w-full z-50 backdrop-blur-2xl flex items-center justify-between h-12 px-10 border-1 ">
       <div>
-        <NavLink to="/">{/* <img className="w-15 h-15 " src={Logo} alt="logo" /> */}</NavLink>
+        <NavLink to="/">
+          <img className="w-15 h-15 " src={Logo} alt="logo" />
+        </NavLink>
       </div>
 
       <div className="flex gap-6">
