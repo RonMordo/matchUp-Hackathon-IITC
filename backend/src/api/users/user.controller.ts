@@ -2,6 +2,8 @@ import { userService } from "./user.service.js";
 import { CreateUserInput, PatchUserInput, ResponseUser } from "./user.types.js";
 import { Request, Response, NextFunction } from "express";
 import { AuthenticatedRequest, IdParams } from "../../utils/globalTypes.js";
+import { IEvent } from "../events/event.types.js";
+import { CreateMessageInput, IMessage } from "../messages/message.types.js";
 
 const getAllUsers = async (
   _req: Request,
@@ -24,6 +26,45 @@ const getUserById = async (
   try {
     const user = await userService.getUserById(req.params.id);
     return res.status(200).json(user);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const getAllEvents = async (
+  req: Request<IdParams>,
+  res: Response<IEvent[]>,
+  next: NextFunction
+) => {
+  try {
+    const events = await userService.getAllEvents(req.params.id);
+    return res.status(200).json(events);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const getAllEventsProtected = async (
+  req: AuthenticatedRequest,
+  res: Response<IEvent[]>,
+  next: NextFunction
+) => {
+  try {
+    const events = await userService.getAllEventsProtected(req.user!.id);
+    return res.status(200).json(events);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const getAllMessages = async (
+  req: AuthenticatedRequest,
+  res: Response<IMessage[]>,
+  next: NextFunction
+) => {
+  try {
+    const messages = await userService.getAllMessages(req.user!.id);
+    return res.status(200).json(messages);
   } catch (err) {
     return next(err);
   }
@@ -68,10 +109,27 @@ const deleteUser = async (
   }
 };
 
+const sendMessage = async (
+  req: AuthenticatedRequest<{}, {}, CreateMessageInput>,
+  res: Response<{ success: boolean }>,
+  next: NextFunction
+) => {
+  try {
+    await userService.sendMessage(req.user!.id, req.body);
+    return res.status(201).json({ success: true });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 export const userController = {
   getAllUsers,
   getUserById,
+  getAllEvents,
+  getAllEventsProtected,
+  getAllMessages,
   updateUser,
   patchUser,
   deleteUser,
+  sendMessage,
 };
