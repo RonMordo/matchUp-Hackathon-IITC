@@ -57,7 +57,7 @@ export function FormFieldWrapper({
             </FormDescription>
           )}
 
-          <FormMessage className="text-sm text-red-600 dark:text-red-400 font-medium" />
+          <FormMessage className="text-sm text-black dark:text-white font-medium" />
         </FormItem>
       )}
     />
