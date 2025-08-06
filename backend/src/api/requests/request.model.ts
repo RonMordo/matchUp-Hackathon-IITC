@@ -5,14 +5,17 @@ const requestSchema = new Schema<RequestDocument, IRequestModel>(
   {
     event: {
       type: Schema.Types.ObjectId,
+      ref: "Event",
       required: true,
     },
     from: {
       type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     to: {
       type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     status: {

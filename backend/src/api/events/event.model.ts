@@ -10,6 +10,7 @@ const eventSchema = new Schema<EventDocument, IEventModel>(
     description: String,
     hobby: {
       type: Schema.Types.ObjectId,
+      ref: "Hobby",
       required: true,
     },
     creator: {

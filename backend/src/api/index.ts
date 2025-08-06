@@ -5,6 +5,7 @@ import eventRouter from "./events/event.route.js";
 import requestRouter from "./requests/request.route.js";
 import hobbyRouter from "./hobbies/hobby.route.js";
 import messageRouter from "./messages/message.route.js";
+import notificationRouter from "./notifications/notification.route.js";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/auth", authRouter);
 router.use("/events", eventRouter);
 router.use("/hobbies", hobbyRouter);
 router.use("/messages", messageRouter);
+router.use("/notification", notificationRouter);
 
 export default router;

@@ -23,6 +23,6 @@ const hobbySchema = new Schema<HobbyDocument, IHobbyModel>(
 );
 
 export const HobbyModel = model<HobbyDocument, IHobbyModel>(
-  "Event",
+  "Hobby",
   hobbySchema
 );
