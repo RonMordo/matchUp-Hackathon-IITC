@@ -1,9 +1,10 @@
 import { RouterProvider } from "react-router";
 import { Router } from "./router/Router";
 import { EventsPage } from "./pages/EventsPage";
+import {EventsCalendarPage} from "./pages/EventsCalendarPage";
 
 function App() {
-  return <EventsPage></EventsPage>
+  return <EventsCalendarPage></EventsCalendarPage>;
   //<RouterProvider router={Router} />;
 }
 
