@@ -10,7 +10,7 @@ export interface Event {
     coordinates: [number, number];
   };
   address: string;
-  time: string;
+  time: Date | string;
   minParticipants: number;
   maxParticipants: number;
   acceptedParticipants: string[];
@@ -19,4 +19,22 @@ export interface Event {
   isPrivate: boolean;
   createdAt: string;
   updatedAt: string;
+  imageUrl: string;
+}
+
+export interface CreateEventDto {
+  title: string;
+  description?: string;
+  hobby: string;
+  creator: string;
+  location?: {
+    type: "Point";
+    coordinates: [number, number];
+  };
+  address: string;
+  time: Date;
+  minParticipants: number;
+  maxParticipants: number;
+  status?: "open" | "closed" | "cancelled" | "full";
+  isPrivate?: boolean;
 }

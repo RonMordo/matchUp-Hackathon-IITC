@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { APIProvider, Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from "@vis.gl/react-google-maps";
+import { useEvents } from "@/hooks/event.hook";
+import { useAuth } from "@/context/AuthContext";
+import { EventCard } from "@/components/EventCard"; // adjust path as needed
 
 const GOOGLE_API = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const MAP_ID = import.meta.env.VITE_MAP_ID;
-console.log("mapID", MAP_ID);
 
 export default function EventMap() {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const { user } = useAuth();
+  const userId = user?._id;
+
+  const { data: events = [] } = useEvents();
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -18,7 +25,6 @@ export default function EventMap() {
       (pos) => {
         const { latitude, longitude } = pos.coords;
         setUserLocation({ lat: latitude, lng: longitude });
-        console.log("✅ User location:", latitude, longitude);
       },
       (err) => {
         console.warn("❌ User denied geolocation:", err.message);
@@ -30,7 +36,7 @@ export default function EventMap() {
     <APIProvider apiKey={GOOGLE_API}>
       <Map
         mapId={MAP_ID}
-        defaultCenter={userLocation ?? { lat: 32.08, lng: 34.78 }} // Default to Tel Aviv
+        defaultCenter={userLocation ?? { lat: 32.08, lng: 34.78 }}
         defaultZoom={13}
         style={{ height: "100vh", width: "100vw" }}
       >
@@ -39,6 +45,38 @@ export default function EventMap() {
             <Pin background="blue" glyphColor="white" borderColor="white" />
           </AdvancedMarker>
         )}
+
+        {events.map((event) => {
+          const [lng, lat] = event.location?.coordinates || [];
+          if (!lat || !lng) return null;
+
+          const color = event.status === "open" ? "green" : event.status === "cancelled" ? "red" : "gray";
+
+          const isSelected = selectedEventId === event._id;
+
+          return (
+            <AdvancedMarker
+              key={event._id}
+              position={{ lat, lng }}
+              onClick={() => setSelectedEventId(isSelected ? null : event._id)}
+            >
+              <Pin background={color} glyphColor="white" borderColor="white" />
+              {isSelected && (
+                <InfoWindow position={{ lat, lng }} onCloseClick={() => setSelectedEventId(null)}>
+                  <div style={{ width: "300px" }}>
+                    <EventCard
+                      event={event}
+                      userId={userId}
+                      onEdit={() => console.log("Edit event", event._id)}
+                      onDelete={() => console.log("Delete event", event._id)}
+                      onJoin={() => console.log("Join event", event._id)}
+                    />
+                  </div>
+                </InfoWindow>
+              )}
+            </AdvancedMarker>
+          );
+        })}
       </Map>
     </APIProvider>
   );
