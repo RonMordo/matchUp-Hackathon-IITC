@@ -1,5 +1,5 @@
 import { Header } from "@/components/static/Header";
-import { AuthPage } from "@/pages/AuthPage";
+import  AuthPage  from "./pages/AuthPage";
 import { useAuth } from "./context/AuthContext";
 import { RecipesPage } from "./pages/recipesPage";
 //import bgImage from "./img/ing.jpg"; // ← ייבוא התמונה מתוך src/img
