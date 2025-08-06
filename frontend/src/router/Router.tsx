@@ -25,7 +25,7 @@ export const Router = createBrowserRouter([
         element: <RootLayout />,
         children: [
           { index: true, element: <HomePage /> },
-          { path: "/events/location", element: <EventMap /> },
+          { path: "/events/map", element: <EventMap /> },
           //{ path: "/recipes/create-recipe", element: <CreateRecipeForm /> },
           //{ path: "/recipes/:id/update-recipe", element: <UpdateRecipePage /> },
         ],
