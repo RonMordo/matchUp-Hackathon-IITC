@@ -85,7 +85,7 @@ const deleteEvent = async (
   }
 };
 
-export const requestController = {
+export const eventController = {
   getAllEvents,
   getEventById,
   createEvent,
