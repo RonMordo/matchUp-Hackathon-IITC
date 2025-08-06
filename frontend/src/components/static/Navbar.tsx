@@ -8,7 +8,6 @@ import {
 import { NavLink, useNavigate } from "react-router";
 import Logo from "@/img/logo.png";
 import { ModeToggle } from "./ToggleTheme";
-import { ChevronDown } from "lucide-react";
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
@@ -30,7 +29,7 @@ export const Navbar = () => {
         </NavLink>
 
         <div className="hidden md:flex gap-6 items-center text-orange-500">
-          {navLinks.map(({ label, to, end }, i) => (
+          {navLinks.map(({ label, to, end }) => (
             <NavLink
               key={to}
               to={to}
