@@ -1,6 +1,4 @@
-// Updated CreateEventForm.tsx
-// This is an adaptation of CreateRecipeForm for creating or editing events
-
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -8,9 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormFieldWrapper } from "./FormFieldWrapper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { Sparkles, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Sparkles } from "lucide-react";
 
 const createEventSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -18,8 +14,12 @@ const createEventSchema = z.object({
   address: z.string().min(1, "Address is required"),
   hobby: z.string().min(1, "Hobby is required"),
   time: z.string().min(1, "Time is required"),
-  minParticipants: z.string().regex(/^\d+$/, "Minimum must be a number"),
-  maxParticipants: z.string().regex(/^\d+$/, "Maximum must be a number"),
+  minParticipants: z
+    .string()
+    .regex(/^\d+$/, "Minimum Participants must be a number"),
+  maxParticipants: z
+    .string()
+    .regex(/^\d+$/, "Maximum Participants must be a number"),
 });
 
 export type CreateEventFormData = z.infer<typeof createEventSchema>;
