@@ -1,0 +1,83 @@
+User:
+- id: generated
+- email: string
+- password: string
+- name: string
+- phone: string
+- location?: GeoJSON                // GeoJSON or simple { city, country }
+- hobbies: ObjectId[]                // Store directly, not virtual
+- availability?: {day: string, from: string, to: string}            // Optional – define format (e.g. ["weekday-evenings"])
+- ownEvents (V): Event[]            // Events the user created
+- participantEvents (V): Event[]    // Events the user is part of
+- messages (V): message[]             // Messages sent/received
+- rating (V): rating[]
+- profilePicture: string
+- notifications (V): notification[]
+- online: boolean
+- createdAt: Date
+- updatedAt: Date
+
+Hobby:
+- id: generated
+- name: string           // e.g. "Hiking"
+- icon: string          // optional for UI
+- category: string      // e.g. "Outdoors", "Sports"
+
+Rating:
+- id
+- from: UserId  // who gave the rating
+- to: UserId    // who was rated
+- score: [1,2,3,4,5]
+- comment?: string
+- eventId?: EventId // optional – from which event
+- createdAt: Date
+- updatedAt: Date
+
+Message:
+- id
+- sender: UserId                   // required
+- recipient?: UserId              // optional – for direct message
+- event?: EventId                 // optional – for event chat
+- subject: string
+- content: string                 // the actual message
+- createdAt: Date
+
+Notification:
+- id
+- user: UserId                 // the user who receives it
+- type: "message" | "request"  // or enum/union
+- from?: UserId                // who triggered the notification
+- event?: EventId              // relevant event
+- message?: MessageId          // if it's a message notification
+- status: "unread" | "read" | "archived"
+- content: string              // optional free-text or auto-generated
+- createdAt
+
+Request:
+- id
+- event: EventId          // the event the request is for
+- from: UserId            // the user making the request
+- to: UserId              // the event creator (auto-filled for internal use)
+- status: "pending" | "accepted" | "rejected" | "cancelled"
+- message?: string        // optional message from the requester
+- responseMessage?: string // optional message from the event creator
+- createdAt: Date
+- updatedAt: Date
+
+Event:
+- id
+- title: string
+- description?: string
+- hobby: HobbyId              // linked to Hobby schema
+- creator: UserId             // who created the event
+- location: GeoJSON           // coordinates for the map
+- address: string             // optional: UI-friendly address
+- time: Date                  // when the event is happening
+- minParticipants: number     // minimum required
+- maxParticipants: number     // cap
+- acceptedParticipants: [UserId]  // confirmed users
+- pendingParticipants: [UserId]   // based on pending requests (denormalized)
+- status: "open" | "closed" | "cancelled" | "full"
+- isPrivate: boolean          // if false → shown on map to all
+- createdAt: Date
+- updatedAt: Date
