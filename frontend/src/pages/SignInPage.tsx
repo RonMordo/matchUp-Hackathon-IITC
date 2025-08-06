@@ -1,8 +1,15 @@
 import LoginForm from "@/components/forms/LoginForm";
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
 import { Sparkles } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 export function LoginPage() {
+  const { user } = useAuth();
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div className="relative min-h-screen flex items-center justify-center px-6 py-8 bg-gradient-to-br from-[#c2e9fb] via-[#a1c4fd] to-[#d4fc79] dark:from-[#0f0c29] dark:via-[#302b63] dark:to-[#24243e] overflow-hidden">
       <div className="absolute -z-10 w-[1000px] h-[1000px] bg-purple-300/20 dark:bg-indigo-800/30 rounded-full blur-3xl animate-pulse" />

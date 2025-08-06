@@ -32,7 +32,7 @@ export default function EventMap() {
         mapId={MAP_ID}
         defaultCenter={userLocation ?? { lat: 32.08, lng: 34.78 }} // Default to Tel Aviv
         defaultZoom={13}
-        style={{ height: "600px", width: "100%" }}
+        style={{ height: "100vh", width: "100vw" }}
       >
         {userLocation && (
           <AdvancedMarker position={userLocation}>
