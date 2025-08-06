@@ -1,7 +1,7 @@
-import { Header } from "@/components/Header";
-import { AuthPage } from "@/components/AuthPage";
-import { useAuth } from "./components/AuthContext";
-import { RecipesPage } from "./components/recipesPage";
+import { Header } from "@/components/static/Header";
+import { AuthPage } from "@/pages/AuthPage";
+import { useAuth } from "./context/AuthContext";
+import { RecipesPage } from "./pages/recipesPage";
 //import bgImage from "./img/ing.jpg"; // ← ייבוא התמונה מתוך src/img
 
 function App() {

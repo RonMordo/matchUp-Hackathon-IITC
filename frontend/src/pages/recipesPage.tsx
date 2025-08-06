@@ -1,11 +1,11 @@
 // RecipesPage.tsx
 import { useState, useMemo } from "react";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { CreateRecipeForm } from "./CreateRecipeForm";
+import { CreateRecipeForm } from "../components/forms/CreateRecipeForm";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { RecipeCard } from "./RecipeCard";
+import { RecipeCard } from "../components/RecipeCard";
 import {
   Dialog,
   DialogTrigger,

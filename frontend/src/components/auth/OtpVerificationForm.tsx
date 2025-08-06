@@ -3,8 +3,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { FormFieldWrapper } from "./FormFieldWrapper";
-import { useAuth } from "./AuthContext";
+import { FormFieldWrapper } from "../forms/FormFieldWrapper";
+import { useAuth } from "../../context/AuthContext";
 
 const otpSchema = z.object({
   otp: z.string().length(6, "OTP must be 6 digits"),

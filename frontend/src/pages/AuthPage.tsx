@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { LoginForm } from "./LoginForm";
-import { RegisterForm } from "./RegisterForm";
-import { OtpVerificationForm } from "./OtpVerificationForm";
+import { LoginForm } from "../components/forms/LoginForm";
+import { RegisterForm } from "../components/forms/RegisterForm";
+import { OtpVerificationForm } from "../components/auth/OtpVerificationForm";
 import { Button } from "@/components/ui/button";
 import { Sparkles, LogIn, UserPlus } from "lucide-react";
 

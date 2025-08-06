@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormFieldWrapper } from "./FormFieldWrapper";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../../context/AuthContext";
 //import loginIllustration from "../img/image.png"; // ← הוספת תמונה
 
 const loginSchema = z.object({
