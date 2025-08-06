@@ -2,27 +2,6 @@ import { UserModel } from "./user.model.js";
 import { AppError } from "../../utils/appError.js";
 import { CreateUserInput, PatchUserInput } from "./user.types.js";
 
-// export interface IUser {
-//   email: string;
-//   password: string;
-//   name: string;
-//   phone: string;
-//   location?: Point;
-//   hobbies?: Types.ObjectId[];
-//   availability?: AvailabilitySlot[];
-//   ownEvents?: Types.ObjectId[];
-//   participantEvents?: Types.ObjectId[];
-//   messages?: Types.ObjectId[];
-//   ratings?: Types.ObjectId[];
-//   profilePicture: string;
-//   notifications?: Types.ObjectId[];
-//   requestsSent?: Types.ObjectId[];
-//   requestsReceived?: Types.ObjectId[];
-//   online: boolean;
-//   createdAt: Date;
-//   updatedAt: Date;
-// }
-
 const getAllUsers = () => {
   return UserModel.find()
     .select("-password -__v")
