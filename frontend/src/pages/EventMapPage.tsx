@@ -8,7 +8,6 @@ console.log("mapID", MAP_ID);
 export default function EventMap() {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
-  // Ask for user's permission + location
   useEffect(() => {
     if (!navigator.geolocation) {
       console.error("Geolocation is not supported");
