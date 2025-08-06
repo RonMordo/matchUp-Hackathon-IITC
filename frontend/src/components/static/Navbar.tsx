@@ -34,6 +34,10 @@ export const Navbar = ({}: NavbarProps) => {
         <NavLink className="font-semibold hover:underline hover:text-orange-300" to="/events/">
           All Events
         </NavLink>
+        <span>|</span>
+        <NavLink className="font-semibold hover:underline hover:text-orange-300" to="/events/calendar">
+          Calendar
+        </NavLink>
       </div>
 
       {/* Avatar with dropdown */}
