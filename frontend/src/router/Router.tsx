@@ -7,7 +7,7 @@ import { HomePage } from "@/pages/HomePage";
 import EventMap from "@/pages/EventMapPage";
 import { EventsPage } from "@/pages/EventsPage";
 import EventsCalendarPage from "@/pages/EventsCalendarPage";
-
+import { MyEventsPage } from "@/pages/MyEventsPage";
 export const Router = createBrowserRouter([
   {
     path: "/auth",
@@ -30,6 +30,8 @@ export const Router = createBrowserRouter([
           { path: "/events/map", element: <EventMap /> },
           { path: "/events/", element: <EventsPage /> },
           { path: "/events/calendar", element: <EventsCalendarPage /> },
+          { path: "/events/My", element: < MyEventsPage/> },
+
         ],
       },
     ],
