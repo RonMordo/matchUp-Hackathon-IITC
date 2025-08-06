@@ -6,10 +6,26 @@ const router = Router();
 
 router.get("/", userController.getAllUsers);
 
+router.get(
+  "/messages",
+  authMiddleware.authenticate,
+  userController.getAllMessages
+);
+
+router.get(
+  "/events",
+  authMiddleware.authenticate,
+  userController.getAllEventsProtected
+);
+
 router.get("/:id", userController.getUserById);
+
+router.get("/:id/events", userController.getAllEvents);
 
 // Protected
 router.use(authMiddleware.authenticate);
+
+router.post("/messages", userController.sendMessage);
 
 router.put("/", userController.updateUser);
 

@@ -14,6 +14,13 @@ export const globalErrorHandler = (
       message: err.message,
       errors: err.errors ?? [],
     });
+  } else if (err instanceof Error) {
+    console.log(err.message);
+    return res.status(500).json({
+      status: "Server error",
+      stackTrace: err.stack,
+      message: err.message,
+    });
   }
 
   console.error("Unhandled Error:", err);

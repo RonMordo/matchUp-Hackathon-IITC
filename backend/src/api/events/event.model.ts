@@ -17,7 +17,6 @@ const eventSchema = new Schema<EventDocument, IEventModel>(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      unique: true,
     },
     location: {
       type: {
@@ -36,6 +35,10 @@ const eventSchema = new Schema<EventDocument, IEventModel>(
     },
     time: {
       type: Date,
+      required: true,
+    },
+    duration: {
+      type: Number,
       required: true,
     },
     minParticipants: {
@@ -72,6 +75,8 @@ const eventSchema = new Schema<EventDocument, IEventModel>(
     timestamps: true,
   }
 );
+
+eventSchema.index({ creator: 1, time: 1 }, { unique: true });
 
 export const EventModel = model<EventDocument, IEventModel>(
   "Event",

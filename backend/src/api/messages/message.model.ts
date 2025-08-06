@@ -3,11 +3,6 @@ import { MessageDocument, IMessageModel } from "./message.types.js";
 
 const messageSchema = new Schema<MessageDocument, IMessageModel>(
   {
-    sender: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
     recipient: {
       type: Schema.Types.ObjectId,
       ref: "User",

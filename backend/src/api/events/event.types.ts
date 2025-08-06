@@ -9,11 +9,12 @@ export interface IEvent {
   location: Point;
   address: string;
   time: Date;
+  duration: number;
   minParticipants: number;
   maxParticipants: number;
   acceptedParticipants: Types.ObjectId[];
   pendingParticipants: Types.ObjectId[];
-  status: "open" | "closed" | "cancelled" | "full";
+  status: "open" | "private" | "cancelled" | "full";
   isPrivate: boolean;
   createdAt: Date;
   updatedAt: Date;
