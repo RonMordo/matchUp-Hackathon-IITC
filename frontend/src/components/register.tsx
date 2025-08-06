@@ -50,8 +50,11 @@ function RegisterForm() {
     },
     onSuccess: (data) => {
       console.log("✅ Registration successful", data);
-      const { requiresOtp, userId } = data;
-      if (requiresOtp) {
+      // Add null check and provide fallback values
+      const requiresOtp = data?.requiresOtp || false;
+      const userId = data?.userId || data?.id || null;
+      
+      if (requiresOtp && userId) {
         setOtpStep(true);
         setUserId(userId);
       } else {
@@ -59,7 +62,8 @@ function RegisterForm() {
       }
     },
     onError: (err: any) => {
-      form.setError("email", { type: "manual", message: err?.response?.data?.message || "Registration failed" });
+      // Set error as root error instead of on specific field
+      form.setError("root", { type: "manual", message: err?.response?.data?.message || "Registration failed" });
     },
   });
 
@@ -121,6 +125,13 @@ function RegisterForm() {
                 placeholder="Enter your password"
               />
             </div>
+
+            {/* Display general form errors */}
+            {form.formState.errors.root && (
+              <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3 mt-3">
+                {form.formState.errors.root.message}
+              </div>
+            )}
 
             <Button
               type="submit"

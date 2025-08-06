@@ -37,9 +37,8 @@ function LoginForm() {
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      phoneNumber: "",
-      password: "",
+      email: "Johny@gmail.com",
+      password: "John12345",
     },
   });
 
@@ -66,7 +65,7 @@ function LoginForm() {
   if (otpStep && userId) {
     return <OtpVerificationForm userId={userId} onSuccess={() => setOtpStep(false)} />;
   }
-  
+
   return (
     <Card className="overflow-hidden p-0 bg-transparent border-none shadow-none">
       <CardContent className="grid p-0 md:grid-cols-2 gap-0 min-h-full">
