@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormFieldWrapper } from "./FormFieldWrapper";
-import { useAuth } from "./AuthContext";
+//import { useAuth } from "./AuthContext";
 //import sideImage from "../img/image.png";
 
 const registerSchema = z
