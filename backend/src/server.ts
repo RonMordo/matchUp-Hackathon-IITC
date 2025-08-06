@@ -13,10 +13,10 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 
 const PORT = process.env.PORT;
-const USERNAME = process.env.USERNAME;
+const MONGO_USER = process.env.MONGO_USER;
 const PASSWORD = process.env.PASSWORD;
-if (!PORT || !USERNAME || !PASSWORD) {
-  console.log("Error reading for .env", PORT, USERNAME, PASSWORD);
+if (!PORT || !MONGO_USER || !PASSWORD) {
+  console.log("Error reading for .env", PORT, MONGO_USER, PASSWORD);
   process.exit(1);
 }
 
@@ -27,7 +27,7 @@ const app = express();
 const initMongo = async () => {
   try {
     await mongoose.connect(
-      `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.by0hj0m.mongodb.net/matchUp?retryWrites=true&w=majority&appName=Cluster0`,
+      `mongodb+srv://${MONGO_USER}:${PASSWORD}@cluster0.by0hj0m.mongodb.net/matchUp?retryWrites=true&w=majority&appName=Cluster0`,
       { timeoutMS: 4000 }
     );
     console.log("Database connected");

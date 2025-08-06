@@ -72,8 +72,13 @@ const patchUser = async (id: string, userData: PatchUserInput) => {
     new: true,
   })
     .select("-password -__v")
-    .populate({ path: "recipes", select: "-__v" })
-    .populate({ path: "reviews", select: "-__v" });
+    .populate({ path: "ownEvents", select: "-__v" })
+    .populate({ path: "participantEvents", select: "-__v" })
+    .populate({ path: "messages", select: "-__v" })
+    .populate({ path: "notifications", select: "-__v" })
+    .populate({ path: "ratings", select: "-__v" })
+    .populate({ path: "requestsSent", select: "-__v" })
+    .populate({ path: "requestsReceived", select: "-__v" });
   if (!updatedUser) {
     throw new AppError(`User with ID: ${id} not found.`, 404);
   }
