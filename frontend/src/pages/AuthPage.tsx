@@ -1,22 +1,22 @@
+"use client";
+
 import { useState } from "react";
-import { LoginForm } from "../components/forms/LoginForm";
-import { RegisterForm } from "../components/forms/RegisterForm";
-import { OtpVerificationForm } from "../components/auth/OtpVerificationForm";
+import { LoginForm } from "@/components/forms/login-form";
+import { RegisterForm } from "@/components/forms/RegisterForm";
+import { OtpVerificationForm } from "@/components/auth/OtpVerificationForm";
 import { Button } from "@/components/ui/button";
 import { Sparkles, LogIn, UserPlus } from "lucide-react";
 
 type Step = "login" | "register" | "verifyOtp";
 
-export function AuthPage() {
+export default function LoginPage() {
   const [step, setStep] = useState<Step>("register");
   const [userId, setUserId] = useState<string | null>(null);
 
   return (
     <div className="relative min-h-screen flex items-center justify-center px-6 py-12 bg-gradient-to-br from-[#c2e9fb] via-[#a1c4fd] to-[#d4fc79] dark:from-[#0f0c29] dark:via-[#302b63] dark:to-[#24243e] overflow-hidden">
-      {/* רקע עיגול גלואינג */}
       <div className="absolute -z-10 w-[1000px] h-[1000px] bg-purple-300/20 dark:bg-indigo-800/30 rounded-full blur-3xl animate-pulse" />
 
-      {/* תיבת טופס */}
       <div className="w-full max-w-xl backdrop-blur-sm bg-white/80 dark:bg-gray-900/80 p-10 rounded-[2rem] shadow-2xl border border-white/40 dark:border-gray-800 transition-all duration-300">
         <div className="text-center mb-10">
           <Sparkles className="mx-auto h-10 w-10 text-indigo-600 dark:text-indigo-300" />
@@ -36,7 +36,6 @@ export function AuthPage() {
           </p>
         </div>
 
-        {/* Tabs */}
         {step !== "verifyOtp" && (
           <div className="flex mb-8 border border-gray-300 dark:border-gray-700 rounded-full overflow-hidden bg-white dark:bg-gray-800 shadow-inner">
             <Button
@@ -66,7 +65,6 @@ export function AuthPage() {
           </div>
         )}
 
-        {/* Form switch */}
         <div className="transition duration-500 ease-in-out">
           {step === "login" && (
             <LoginForm onSwitchToRegister={() => setStep("register")} />

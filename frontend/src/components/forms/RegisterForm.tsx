@@ -4,8 +4,9 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormFieldWrapper } from "./FormFieldWrapper";
-//import { useAuth } from "./AuthContext";
-//import sideImage from "../img/image.png";
+import { Card, CardContent } from "@/components/ui/card";
+import { FcGoogle } from "react-icons/fc";
+import sideImage from "@/img/login.jpeg";
 
 const registerSchema = z
   .object({
@@ -56,100 +57,113 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       const responseData = await res.json();
       if (!res.ok) throw new Error(responseData.message || "Registration failed");
 
-      // ציפייה לתשובה מהשרת: { requiresOtp, userId }
       const { requiresOtp, userId } = responseData;
       form.reset();
       onSuccess({ requiresOtp, userId });
-
     } catch (error: any) {
       form.setError("email", { type: "manual", message: error.message });
     }
   };
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 shadow-2xl">
-      <div className="flex flex-col md:flex-row">
-        <div className="relative md:w-[44%]">
-          {/* <img
-            src={sideImage}
-            alt="Create account"
-            className="h-52 md:h-full w-full object-cover"
-            loading="lazy"
-          /> */}
-          <div className="absolute top-6 left-6 hidden md:flex flex-col gap-3">
-            <div className="px-3 py-1 rounded-full bg-white/90 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 text-xs font-medium">
-              🔒 Secure by design
-            </div>
-            <div className="px-3 py-1 rounded-full bg-white/90 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 text-xs font-medium">
-              ⚡ 2‑minute setup
-            </div>
-          </div>
-        </div>
+    <div className="flex flex-col gap-4">
+      <Card className="overflow-hidden p-0">
+        <CardContent className="grid p-0 md:grid-cols-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 md:p-6">
+            <div className="flex flex-col gap-4">
+              <div className="text-center mb-2">
+                <h1 className="text-xl font-bold">Create Account</h1>
+                <p className="text-sm text-muted-foreground">
+                  Sign up and join our platform
+                </p>
+              </div>
 
-        <div className="md:w-[56%] bg-white dark:bg-gray-900 p-6 sm:p-8">
-          <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-2">
-            Create a New Account
-          </h2>
-          <p className="text-center text-sm text-gray-600 dark:text-gray-400 mb-6">
-            It’s quick and free.
-          </p>
+              <Form {...form}>
+                <div className="grid gap-3">
+                  <FormFieldWrapper
+                    control={form.control}
+                    name="name"
+                    label="Full Name"
+                    type="text"
+                    placeholder="Enter your name"
+                  />
+                  <FormFieldWrapper
+                    control={form.control}
+                    name="email"
+                    label="Email"
+                    type="email"
+                    placeholder="you@example.com"
+                  />
+                  <FormFieldWrapper
+                    control={form.control}
+                    name="phoneNumber"
+                    label="Phone Number"
+                    type="tel"
+                    placeholder="05XXXXXXXX"
+                  />
+                  <FormFieldWrapper
+                    control={form.control}
+                    name="password"
+                    label="Password"
+                    type="password"
+                    placeholder="Create a strong password"
+                  />
+                </div>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-              <FormFieldWrapper
-                control={form.control}
-                name="name"
-                label="Full Name"
-                type="text"
-                placeholder="Enter your name"
-                description="At least 4 characters"
-              />
+                <Button
+                  type="submit"
+                  disabled={form.formState.isSubmitting}
+                  className="w-full mt-2"
+                >
+                  {form.formState.isSubmitting ? "Registering..." : "Create account"}
+                </Button>
+              </Form>
 
-              <FormFieldWrapper
-                control={form.control}
-                name="email"
-                label="Email Address"
-                type="email"
-                placeholder="Enter your email"
-              />
-
-              <FormFieldWrapper
-                control={form.control}
-                name="phoneNumber"
-                label="Phone Number"
-                type="tel"
-                placeholder="05XXXXXXXX"
-                description="Optional, must be Israeli format"
-              />
-
-              <FormFieldWrapper
-                control={form.control}
-                name="password"
-                label="Password"
-                type="password"
-                placeholder="Create a strong password"
-                description="6+ chars, 1 uppercase, 1 lowercase, 1 number"
-              />
+              <div className="relative text-center mt-2 mb-1">
+                <span className="bg-white dark:bg-gray-900 px-2 text-sm text-muted-foreground z-10 relative">
+                  Or continue with
+                </span>
+                <div className="absolute inset-0 border-t border-gray-300 top-1/2 -z-0" />
+              </div>
 
               <Button
-                type="submit"
-                disabled={form.formState.isSubmitting}
-                className="w-full py-3 text-base font-semibold"
+                type="button"
+                variant="outline"
+                className="w-full flex items-center justify-center gap-2"
               >
-                {form.formState.isSubmitting ? "Registering..." : "Create account"}
+                <FcGoogle size={20} />
+                Sign up with Google
               </Button>
 
-              <div className="flex items-center justify-center gap-4 pt-1 text-xs text-gray-500">
-                <span className="px-2 py-0.5 rounded-full border border-gray-200 dark:border-gray-700">
-                  No spam
-                </span>
-                <span className="px-2 py-0.5 rounded-full border border-gray-200 dark:border-gray-700">
-                  Cancel anytime
-                </span>
+              <div className="text-center text-sm mt-1">
+                Already have an account?{" "}
+                <a href="#" className="underline">
+                  Log in
+                </a>
               </div>
-            </form>
-          </Form>
-        </div>
+            </div>
+          </form>
+
+          <div className="bg-muted relative hidden md:block">
+            <img
+              src={sideImage}
+              alt="Side visual"
+              className="h-full w-full object-cover dark:brightness-75 dark:grayscale"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="text-muted-foreground text-center text-xs text-balance">
+        By creating an account, you agree to our{" "}
+        <a href="#" className="underline">
+          Terms
+        </a>{" "}
+        and{" "}
+        <a href="#" className="underline">
+          Privacy Policy
+        </a>
+        .
       </div>
     </div>
   );
