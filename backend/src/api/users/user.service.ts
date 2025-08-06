@@ -1,6 +1,14 @@
 import { UserModel } from "./user.model.js";
 import { AppError } from "../../utils/appError.js";
 import { CreateUserInput, PatchUserInput } from "./user.types.js";
+import { EventModel } from "../events/event.model.js";
+import { MessageModel } from "../messages/message.model.js";
+import { CreateMessageInput } from "../messages/message.types.js";
+import { messageService } from "../messages/message.service.js";
+import { notificationService } from "../notifications/notification.service.js";
+import { CreateNotificationInput } from "../notifications/notification.types.js";
+import { Types } from "mongoose";
+import { NotificationModel } from "../notifications/notification.model.js";
 
 const getAllUsers = () => {
   return UserModel.find()
@@ -92,12 +100,60 @@ const deleteUser = async (id: string) => {
   }
 };
 
+const getAllEvents = (id: string) => {
+  return EventModel.find({ creator: id })
+    .select(
+      "-pendingParticipants -acceptedParticipants -isPrivate -creator -minParticipants -maxParticipants -__v"
+    )
+    .populate("hobby");
+};
+
+const getAllEventsProtected = (id: string) => {
+  return EventModel.find({ creator: id })
+    .populate({ path: "pendingParticipants", select: "-password -__v" })
+    .populate({ path: "acceptedParticipants", select: "-password -__v" });
+};
+
+const getAllMessages = (id: string) => {
+  return MessageModel.find({ recipient: id }).populate({
+    path: "event",
+    select:
+      "-pendingParticipants -acceptedParticipants -minParticipants -maxParticipants -__v",
+  });
+};
+
+const sendMessage = async (
+  senderId: string,
+  messageData: CreateMessageInput
+) => {
+  const newMessage = await messageService.createMessage(messageData);
+  const newNotification: CreateNotificationInput = {
+    recipient: messageData.recipient,
+    type: "message",
+    from: new Types.ObjectId(senderId),
+    event: messageData.event,
+    message: newMessage._id,
+    status: "unread",
+    content: messageData.content,
+  };
+  return notificationService.createNotification(newNotification);
+};
+
+const getAllNotifications = (id: string) => {
+  return NotificationModel.find({ recipient: id }).select("-__v");
+};
+
 export const userService = {
   getAllUsers,
   getUserById,
+  getAllEvents,
+  getAllEventsProtected,
+  getAllMessages,
+  getAllNotifications,
   createUser,
   getUserByEmail,
   updateUser,
   patchUser,
   deleteUser,
+  sendMessage,
 };

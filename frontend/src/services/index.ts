@@ -1,11 +1,10 @@
-import { AuthService } from "./auth";
+import { AuthService } from "./auth.service";
+import { EventService } from "./event.service";
 
-export { default as axiosInstance } from "../utils/axiosInstance";
-export { isAuthenticated } from "../utils/axiosInstance";
+export { AuthService } from "./auth.service";
+export { EventService } from "./event.service";
 
-export { AuthService } from "./auth";
-
-export { register, login, logout, getMe } from "./auth";
+export { register, login, logout, getMe } from "./auth.service";
 
 export const Services = {
   Auth: AuthService,

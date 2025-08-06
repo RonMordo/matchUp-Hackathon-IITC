@@ -1,15 +1,8 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -17,44 +10,21 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
 } from "@/components/ui/alert-dialog";
-import { mockEvents } from "../data/mockData";
 
 import { EventCard } from "../components/EventCard";
-import type { Event } from "../components/EventCard";
+import { CreateEventForm } from "../components/forms/CreateEventForm";
+import { useEvents } from "@/hooks/event.hook";
 
 export function EventsPage() {
   const { user } = useAuth();
-  const queryClient = useQueryClient();
   const [eventToDelete, setEventToDelete] = useState<string | null>(null);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-  const {
-    data: events = [],
-    isLoading,
-    isError,
-  } = useQuery<Event[]>({
-    queryKey: ["events"],
-    queryFn: async (): Promise<Event[]> => {
-      return mockEvents.map((e) => ({
-        ...e,
-        time: new Date(e.time).toISOString(),
-        createdAt: new Date(e.createdAt).toISOString(),
-        updatedAt: new Date(e.updatedAt).toISOString(),
-        status: e.status as Event["status"],
-        location: {
-          type: "Point" as const,
-          coordinates: [e.location.coordinates[0], e.location.coordinates[1]] as [
-            number,
-            number
-          ],
-        },
-      }));
-    },
-  });
+  const { data: events = [], isLoading, isError } = useEvents();
 
   const handleDelete = async () => {
     if (!user || !eventToDelete) return;
     try {
-      queryClient.invalidateQueries({ queryKey: ["events"] });
       setEventToDelete(null);
     } catch (err: any) {
       alert(`Error deleting event: ${err.message}`);
@@ -73,14 +43,13 @@ export function EventsPage() {
 
   return (
     <div className="max-w-7xl mx-auto py-16 px-8 bg-gradient-to-tr from-purple-50 via-indigo-100 to-pink-50 min-h-screen">
-      {/* Header */}
       <div className="flex justify-between items-center mb-16">
         <h1 className="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 drop-shadow-lg">
           🎉 Upcoming Events
         </h1>
 
         {user && (
-          <Dialog>
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
             <DialogTrigger asChild>
               <Button
                 className="bg-gradient-to-r from-pink-600 to-yellow-400 hover:from-pink-500 hover:to-yellow-300 text-white px-8 py-4 rounded-full shadow-xl flex items-center gap-4 font-semibold tracking-wide text-lg transition-transform transform hover:scale-110 active:scale-95"
@@ -92,11 +61,10 @@ export function EventsPage() {
             </DialogTrigger>
             <DialogContent className="max-w-lg rounded-3xl shadow-2xl border border-pink-300">
               <DialogHeader>
-                <DialogTitle className="text-3xl font-bold text-pink-700">
-                  Add a New Event
-                </DialogTitle>
+                <DialogTitle className="text-3xl font-bold text-pink-700">Add a New Event</DialogTitle>
               </DialogHeader>
-              {/* AddEventForm goes here */}
+
+              <CreateEventForm onClose={() => setIsCreateOpen(false)} />
             </DialogContent>
           </Dialog>
         )}
@@ -110,9 +78,7 @@ export function EventsPage() {
           </p>
         )}
         {isError && (
-          <p className="text-center col-span-full text-xl font-semibold text-red-600">
-            Failed to load events
-          </p>
+          <p className="text-center col-span-full text-xl font-semibold text-red-600">Failed to load events</p>
         )}
         {!isLoading &&
           !isError &&
@@ -129,15 +95,10 @@ export function EventsPage() {
       </div>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog
-        open={!!eventToDelete}
-        onOpenChange={() => setEventToDelete(null)}
-      >
+      <AlertDialog open={!!eventToDelete} onOpenChange={() => setEventToDelete(null)}>
         <AlertDialogContent className="rounded-3xl border border-red-400 shadow-2xl bg-gradient-to-tr from-red-50 to-red-100">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-2xl font-extrabold text-red-700">
-              Delete this event?
-            </AlertDialogTitle>
+            <AlertDialogTitle className="text-2xl font-extrabold text-red-700">Delete this event?</AlertDialogTitle>
             <AlertDialogDescription className="text-base text-red-600">
               This action cannot be undone. Are you sure you want to proceed?
             </AlertDialogDescription>

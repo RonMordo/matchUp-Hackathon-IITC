@@ -1,14 +1,14 @@
 import { HydratedDocument, Model, Types } from "mongoose";
 
 export interface INotification {
-  user: Types.ObjectId;
+  recipient: Types.ObjectId;
   type: "message" | "request";
   from?: Types.ObjectId;
   event?: Types.ObjectId;
   message?: Types.ObjectId;
   request?: Types.ObjectId;
   status: "unread" | "raed" | "archived";
-  content: "string";
+  content: string;
   createdAt: Date;
   updatedAt: Date;
 }

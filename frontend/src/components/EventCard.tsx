@@ -12,36 +12,8 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-
-export type Event = {
-  _id: string;
-  title: string;
-  description?: string;
-  hobby: string;
-  creator: string;
-  imageUrl?: string;
-  location: {
-    type: "Point";
-    coordinates: [number, number];
-  };
-  address: string;
-  time: string;
-  minParticipants: number;
-  maxParticipants: number;
-  acceptedParticipants: string[];
-  pendingParticipants: string[];
-  status: "open" | "closed";
-  isPrivate: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import type { Event } from "@/types";
 
 type Props = {
   event: Event;
@@ -70,12 +42,10 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-gray-300 bg-white/60 backdrop-blur-md shadow-lg hover:shadow-xl transition-shadow">
-      {/* Hobby badge */}
       <div className="absolute top-3 left-3 bg-amber-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg z-10">
         {event.hobby}
       </div>
 
-      {/* Image or placeholder */}
       <div className="relative">
         {event.imageUrl ? (
           <img
@@ -129,12 +99,7 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
             {/* Image Hero */}
             <div className="relative">
               {event.imageUrl ? (
-                <img
-                  src={event.imageUrl}
-                  alt={event.title}
-                  className="w-full h-60 object-cover"
-                  loading="lazy"
-                />
+                <img src={event.imageUrl} alt={event.title} className="w-full h-60 object-cover" loading="lazy" />
               ) : (
                 <div className="w-full h-60 bg-gray-200 dark:bg-gray-800" />
               )}
@@ -174,10 +139,7 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
 
                 {/* Join button */}
                 {userId && !userJoined && (
-                  <Button
-                    className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white"
-                    onClick={handleJoinClick}
-                  >
+                  <Button className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white" onClick={handleJoinClick}>
                     Join Event
                   </Button>
                 )}

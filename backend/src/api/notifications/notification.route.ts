@@ -4,12 +4,12 @@ import { authMiddleware } from "../auth/auth.middleware.js";
 
 const router = Router();
 
+// Protected
+router.use(authMiddleware.authenticate);
+
 router.get("/", notificationController.getAllNotifications);
 
 router.get("/:id", notificationController.getNotificationById);
-
-// Protected
-router.use(authMiddleware.authenticate);
 
 router.post("/", notificationController.createNotification);
 
