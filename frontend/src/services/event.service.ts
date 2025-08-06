@@ -1,6 +1,5 @@
-// src/services/event.service.ts
-import axiosInstance from "@/utils/axiosInstance"; // adjust path if needed
-import type { Event } from "@/types/index"; // define this type based on your schema
+import axiosInstance from "@/utils/axiosInstance";
+import type { Event } from "@/types/index";
 
 export const EventService = {
   // GET /api/events

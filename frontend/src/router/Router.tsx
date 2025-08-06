@@ -6,6 +6,7 @@ import { ProtectRoutes } from "./ProtectRoutes";
 import { HomePage } from "@/pages/HomePage";
 import EventMap from "@/pages/EventMapPage";
 import { EventsPage } from "@/pages/EventsPage";
+import EventsCalendarPage from "@/pages/EventsCalendarPage";
 
 export const Router = createBrowserRouter([
   {
@@ -28,8 +29,7 @@ export const Router = createBrowserRouter([
           { index: true, element: <HomePage /> },
           { path: "/events/map", element: <EventMap /> },
           { path: "/events/", element: <EventsPage /> },
-          //{path: "/events/:id", element: <EventsPage /> },
-          //{ path: "/recipes/:id/update-recipe", element: <UpdateRecipePage /> },
+          { path: "/events/calendar", element: <EventsCalendarPage /> },
         ],
       },
     ],
