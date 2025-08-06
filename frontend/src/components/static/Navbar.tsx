@@ -25,12 +25,12 @@ export const Navbar = ({}: NavbarProps) => {
           Home
         </NavLink>
         <span>|</span>
-        <NavLink className="font-semibold hover:underline hover:text-orange-300" to="/recipes/MyRecipes">
-          My Recipes
+        <NavLink className="font-semibold hover:underline hover:text-orange-300" to="/events/map">
+          Map
         </NavLink>
         <span>|</span>
-        <NavLink className="font-semibold hover:underline hover:text-orange-300" to="recipes/create-recipe">
-          Add Recipe
+        <NavLink className="font-semibold hover:underline hover:text-orange-300" to="/events/">
+          All Events
         </NavLink>
       </div>
 

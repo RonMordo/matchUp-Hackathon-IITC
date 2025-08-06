@@ -1,4 +1,4 @@
-import LoginForm from "@/components/login";
+import LoginForm from "@/components/forms/LoginForm";
 import { Link } from "react-router";
 import { Sparkles } from "lucide-react";
 
@@ -10,12 +10,8 @@ export function LoginPage() {
       <div className="w-full max-w-3xl backdrop-blur-sm bg-white/80 dark:bg-gray-900/80 p-6 rounded-[2rem] shadow-2xl border border-white/40 dark:border-gray-800 transition-all duration-300">
         <div className="text-center mb-4">
           <Sparkles className="mx-auto h-10 w-10 text-indigo-600 dark:text-indigo-300" />
-          <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight mt-2">
-            Welcome Back!
-          </h1>
-          <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">
-            Sign in to access your dashboard.
-          </p>
+          <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight mt-2">Welcome Back!</h1>
+          <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">Sign in to access your dashboard.</p>
         </div>
 
         <div className="transition duration-500 ease-in-out">

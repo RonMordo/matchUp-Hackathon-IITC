@@ -72,6 +72,7 @@ const userSchema = new Schema<UserDocument, IUserModel>(
     online: {
       type: Boolean,
       required: true,
+      default: false,
     },
   },
   {
