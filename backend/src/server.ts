@@ -27,7 +27,7 @@ const app = express();
 const initMongo = async () => {
   try {
     await mongoose.connect(
-      `mongodb+srv://ronmordo1:nzNKYkATsLc1gD7h@cluster0.by0hj0m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
+      `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.by0hj0m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
       { timeoutMS: 4000 }
     );
     console.log("Database connected");
