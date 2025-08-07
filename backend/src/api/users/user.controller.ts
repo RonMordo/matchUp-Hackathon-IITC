@@ -33,26 +33,39 @@ const getUserById = async (
   }
 };
 
-const getAllEvents = async (
+const getAllCreatorEvents = async (
   req: Request<IdParams>,
   res: Response<IEvent[]>,
   next: NextFunction
 ) => {
   try {
-    const events = await userService.getAllEvents(req.params.id);
+    const events = await userService.getAllCreatorEvents(req.params.id);
     return res.status(200).json(events);
   } catch (err) {
     return next(err);
   }
 };
 
-const getAllEventsProtected = async (
+const getAllCreatorEventsProtected = async (
   req: AuthenticatedRequest,
   res: Response<IEvent[]>,
   next: NextFunction
 ) => {
   try {
-    const events = await userService.getAllEventsProtected(req.user!.id);
+    const events = await userService.getAllCreatorEventsProtected(req.user!.id);
+    return res.status(200).json(events);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const getAllEvents = async (
+  req: AuthenticatedRequest,
+  res: Response<IEvent[]>,
+  next: NextFunction
+) => {
+  try {
+    const events = await userService.getAllEvents(req.user!.id);
     return res.status(200).json(events);
   } catch (err) {
     return next(err);
@@ -156,7 +169,8 @@ export const userController = {
   getAllUsers,
   getUserById,
   getAllEvents,
-  getAllEventsProtected,
+  getAllCreatorEventsProtected,
+  getAllCreatorEvents,
   getAllMessages,
   getAllNotifications,
   updateUser,
