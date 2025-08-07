@@ -18,7 +18,11 @@ router.get(
   userController.getAllEventsProtected
 );
 
-router.get("/notifications", userController.getAllNotifications);
+router.get(
+  "/notifications",
+  authMiddleware.authenticate,
+  userController.getAllNotifications
+);
 
 router.get("/:id", userController.getUserById);
 
