@@ -8,7 +8,7 @@ import {
 import { NavLink, useNavigate } from "react-router";
 import Logo from "@/img/logo.png";
 import { ModeToggle } from "./ToggleTheme";
-import { IoIosNotifications } from "react-icons/io";
+import { NotificationDropdown } from "./NotificationDropdown";
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
@@ -49,11 +49,7 @@ export const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <IoIosNotifications
-            size={28}
-            color="#ff6900"
-            className="cursor-pointer"
-          />
+          <NotificationDropdown />
           <ModeToggle />
 
           <DropdownMenu>

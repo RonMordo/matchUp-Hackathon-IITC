@@ -1,9 +1,12 @@
 // src/types/event.ts
+// src/types/event.ts
+import type { Hobby } from "./hobbies"; 
+
 export interface Event {
   _id: string;
   title: string;
   description?: string;
-  hobby: string;
+  hobby: Hobby; // ✅ במקום string
   creator: string;
   location: {
     type: "Point";
