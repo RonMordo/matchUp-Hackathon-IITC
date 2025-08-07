@@ -22,18 +22,19 @@ export default function EventMap() {
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const { latitude, longitude } = pos.coords;
-        setUserLocation({ lat: latitude, lng: longitude });
-      },
-      (err) => {
-        console.warn("❌ User denied geolocation:", err.message);
-      }
-    );
-    const intevalID = setInterval(() => {}, 10000);
-    clearInterval(intevalID);
-    console.log("gettting new location");
+    const intevalID = setInterval(() => {
+      console.log("gettting new location");
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          setUserLocation({ lat: latitude, lng: longitude });
+        },
+        (err) => {
+          console.warn("❌ User denied geolocation:", err.message);
+        }
+      );
+    }, 1000);
+    return () => clearInterval(intevalID);
   }, [userLocation]);
 
   return (
