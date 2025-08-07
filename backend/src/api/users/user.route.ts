@@ -29,6 +29,8 @@ router.post("/messages", userController.sendMessage);
 
 router.put("/", userController.updateUser);
 
+router.patch("/notifications/:id", userController.toggleReadNotification);
+
 router.patch("/", userController.patchUser);
 
 router.delete("/", userController.deleteUser);
