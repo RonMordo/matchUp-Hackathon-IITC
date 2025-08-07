@@ -13,6 +13,8 @@ router.use(authMiddleware.authenticate);
 
 router.post("/", hobbyController.createHobby);
 
+router.post("/bulk", hobbyController.createHobbies);
+
 router.put("/:id", hobbyController.updateHobby);
 
 router.patch("/:id", hobbyController.patchHobby);

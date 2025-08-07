@@ -5,6 +5,7 @@ import { AuthenticatedRequest, IdParams } from "../../utils/globalTypes.js";
 import { IEvent } from "../events/event.types.js";
 import { CreateMessageInput, IMessage } from "../messages/message.types.js";
 import { notificationService } from "../notifications/notification.service.js";
+import { INotification } from "../notifications/notification.types.js";
 
 const getAllUsers = async (
   _req: Request,
@@ -66,6 +67,19 @@ const getAllMessages = async (
   try {
     const messages = await userService.getAllMessages(req.user!.id);
     return res.status(200).json(messages);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const getAllNotifications = async (
+  req: AuthenticatedRequest,
+  res: Response<INotification[]>,
+  next: NextFunction
+) => {
+  try {
+    const notifications = await userService.getAllNotifications(req.user!.id);
+    return res.status(200).json(notifications);
   } catch (err) {
     return next(err);
   }
@@ -142,6 +156,7 @@ export const userController = {
   getAllEvents,
   getAllEventsProtected,
   getAllMessages,
+  getAllNotifications,
   updateUser,
   patchUser,
   deleteUser,
