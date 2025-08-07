@@ -35,7 +35,7 @@ export interface CreateEventDto {
   };
   address: string;
   time: Date;
-  duration: number; // Duration in minutes
+  duration: number;
   minParticipants: number;
   maxParticipants: number;
   status?: "open" | "closed" | "cancelled" | "full";

@@ -3,11 +3,7 @@ import { CreateEventInput, PatchEventInput, IEvent } from "./event.types.js";
 import { Request, Response, NextFunction } from "express";
 import { AuthenticatedRequest, IdParams } from "../../utils/globalTypes.js";
 
-const getAllEvents = async (
-  _req: Request,
-  res: Response<IEvent[]>,
-  next: NextFunction
-) => {
+const getAllEvents = async (_req: Request, res: Response<IEvent[]>, next: NextFunction) => {
   try {
     const events = await eventService.getAllEvents();
     return res.status(200).json(events);
@@ -16,11 +12,7 @@ const getAllEvents = async (
   }
 };
 
-const getEventById = async (
-  req: Request<IdParams>,
-  res: Response<IEvent>,
-  next: NextFunction
-) => {
+const getEventById = async (req: Request<IdParams>, res: Response<IEvent>, next: NextFunction) => {
   try {
     const event = await eventService.getEventById(req.params.id);
     return res.status(200).json(event);
@@ -49,10 +41,7 @@ const updateEvent = async (
   next: NextFunction
 ) => {
   try {
-    const updatedEvent = await eventService.updateEvent(
-      req.params.id,
-      req.body
-    );
+    const updatedEvent = await eventService.updateEvent(req.params.id, req.body);
     return res.status(200).json(updatedEvent);
   } catch (err) {
     return next(err);
@@ -72,11 +61,7 @@ const patchEvent = async (
   }
 };
 
-const deleteEvent = async (
-  req: AuthenticatedRequest<IdParams>,
-  res: Response,
-  next: NextFunction
-) => {
+const deleteEvent = async (req: AuthenticatedRequest<IdParams>, res: Response, next: NextFunction) => {
   try {
     await eventService.deleteEvent(req.params.id);
     return res.status(200).json({ success: true });

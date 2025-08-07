@@ -25,20 +25,11 @@ type Props = {
   showJoinButton?: boolean; // ברירת מחדל true
 };
 
-export function EventCard({
-  event,
-  userId,
-  onEdit,
-  onDelete,
-  onJoin,
-  showJoinButton = true,
-}: Props) {
+export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinButton = true }: Props) {
   const [openDetails, setOpenDetails] = useState(false);
 
   const participantsCount = event.acceptedParticipants.length;
-  const userJoined = userId
-    ? event.acceptedParticipants.some((id) => id.toString() === userId.toString())
-    : false;
+  const userJoined = userId ? event.acceptedParticipants.some((id) => id.toString() === userId.toString()) : false;
 
   const { mutate: updateEvent } = useUpdateEvent();
   const { mutate: deleteEvent } = useDeleteEvent();
@@ -60,11 +51,14 @@ export function EventCard({
     }
   };
 
-  const hobbyName = typeof event.hobby === "string" ? "Unknown Hobby" : event.hobby.name;
+  const hobbyName = event.hobby?.name || "Unknown Hobby";
+
+  console.log(hobbyName);
+  console.log("Event.hobby:", event.hobby);
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-gray-300 bg-white/60 backdrop-blur-md shadow-lg hover:shadow-xl transition-shadow">
-      <div className="absolute top-3 left-3 bg-amber-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg z-10">
+      <div className="absolute top-3 left-3 bg-amber-600 text-white px-10 py-1 rounded-full text-xs font-semibold shadow-lg z-10">
         {hobbyName}
       </div>
 
