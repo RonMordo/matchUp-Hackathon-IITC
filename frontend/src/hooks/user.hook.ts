@@ -29,7 +29,12 @@ export const useUserEventsProtected = () => {
     queryFn: UserService.getAllEventsProtected,
   });
 };
-
+export const useUserParticipatedEvents = () => {
+  return useQuery({
+    queryKey: ["user", "events", "participated"],
+    queryFn: UserService.getUserParticipatedEvents,
+  });
+};
 export const useUserEvents = (id: string) => {
   return useQuery({
     queryKey: ["users", id, "events"],
