@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import type { Event } from "@/types";
+import { useUpdateEvent, useDeleteEvent } from "../hooks/event.hook";
 
 type Props = {
   event: Event;
@@ -21,13 +22,26 @@ type Props = {
   onEdit: () => void;
   onDelete: () => void;
   onJoin: () => void;
+  showJoinButton?: boolean; // ברירת מחדל true
 };
 
-export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
+export function EventCard({
+  event,
+  userId,
+  onEdit,
+  onDelete,
+  onJoin,
+  showJoinButton = true,
+}: Props) {
   const [openDetails, setOpenDetails] = useState(false);
 
   const participantsCount = event.acceptedParticipants.length;
-  const userJoined = userId ? event.acceptedParticipants.includes(userId) : false;
+  const userJoined = userId
+    ? event.acceptedParticipants.some((id) => id.toString() === userId.toString())
+    : false;
+
+  const { mutate: updateEvent } = useUpdateEvent();
+  const { mutate: deleteEvent } = useDeleteEvent();
 
   const handleJoinClick = () => {
     if (!userId) {
@@ -35,12 +49,17 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
       return;
     }
     if (!userJoined) {
-      onJoin();
+      updateEvent({
+        id: event._id,
+        data: {
+          acceptedParticipants: [...event.acceptedParticipants, userId],
+        },
+      });
       setOpenDetails(false);
+      if (onJoin) onJoin();
     }
   };
 
-  // 🧠 Get hobby name safely whether it's a string or object
   const hobbyName = typeof event.hobby === "string" ? "Unknown Hobby" : event.hobby.name;
 
   return (
@@ -135,12 +154,12 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
                   <p className="mt-2 capitalize">{event.status}</p>
                 </section>
 
-                {userId && !userJoined && (
+                {showJoinButton && userId && !userJoined && (
                   <Button className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white" onClick={handleJoinClick}>
                     Join Event
                   </Button>
                 )}
-                {!userId && (
+                {showJoinButton && !userId && (
                   <Button
                     className="w-full mt-4 bg-gray-400 cursor-not-allowed text-white"
                     onClick={() => alert("You must be logged in to join this event.")}
@@ -149,7 +168,7 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
                     Join Event
                   </Button>
                 )}
-                {userId && userJoined && (
+                {showJoinButton && userId && userJoined && (
                   <div className="text-green-600 font-semibold mt-4 text-center">
                     You are registered for this event.
                   </div>
@@ -197,7 +216,7 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
                   </AlertDialogCancel>
                   <AlertDialogAction
                     className="bg-red-700 hover:bg-red-600 text-white rounded-md px-4 py-2"
-                    onClick={onDelete}
+                    onClick={() => deleteEvent(event._id)}
                   >
                     Delete
                   </AlertDialogAction>
