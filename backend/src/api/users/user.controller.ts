@@ -78,6 +78,8 @@ const getAllNotifications = async (
   next: NextFunction
 ) => {
   try {
+    console.log(req.user!);
+
     const notifications = await userService.getAllNotifications(req.user!.id);
     return res.status(200).json(notifications);
   } catch (err) {
