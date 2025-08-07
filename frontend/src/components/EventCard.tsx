@@ -27,6 +27,7 @@ type Props = {
 
 export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinButton = true }: Props) {
   const [openDetails, setOpenDetails] = useState(false);
+  const isEventCanceled = event.status === "cancelled";
 
   const participantsCount = event.acceptedParticipants.length;
   const userJoined = userId ? event.acceptedParticipants.some((id) => id.toString() === userId.toString()) : false;
@@ -151,7 +152,7 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinBut
                   <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Status</h3>
                   <p className="mt-2 capitalize">{event.status}</p>
                 </section>
-                {showJoinButton && userId && userId !== event.creator && (
+                {showJoinButton && !isEventCanceled && userId && userId !== event.creator && (
                   <>
                     {!userJoined ? (
                       <Button
@@ -171,13 +172,25 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinBut
                   </>
                 )}
 
-                {showJoinButton && (!userId || userId === event.creator) && (
+                {showJoinButton && (isEventCanceled || !userId || userId === event.creator) && (
                   <Button
                     className="w-full mt-4 bg-gray-400 cursor-not-allowed text-white"
-                    onClick={() => alert("You cannot join your own event.")}
+                    onClick={() =>
+                      alert(
+                        isEventCanceled
+                          ? "This event has been canceled."
+                          : userId === event.creator
+                          ? "You cannot join your own event."
+                          : "You must be logged in to join this event."
+                      )
+                    }
                     disabled
                   >
-                    {userId === event.creator ? "You are the organizer" : "Join Event"}
+                    {isEventCanceled
+                      ? "Event Canceled"
+                      : userId === event.creator
+                      ? "You are the organizer"
+                      : "Join Event"}
                   </Button>
                 )}
 
