@@ -7,11 +7,7 @@ import { CreateMessageInput, IMessage } from "../messages/message.types.js";
 import { notificationService } from "../notifications/notification.service.js";
 import { INotification } from "../notifications/notification.types.js";
 
-const getAllUsers = async (
-  _req: Request,
-  res: Response<ResponseUser[]>,
-  next: NextFunction
-) => {
+const getAllUsers = async (_req: Request, res: Response<ResponseUser[]>, next: NextFunction) => {
   try {
     const users = await userService.getAllUsers();
     return res.status(200).json(users);
@@ -20,11 +16,7 @@ const getAllUsers = async (
   }
 };
 
-const getUserById = async (
-  req: Request<IdParams>,
-  res: Response<ResponseUser>,
-  next: NextFunction
-) => {
+const getUserById = async (req: Request<IdParams>, res: Response<ResponseUser>, next: NextFunction) => {
   try {
     const user = await userService.getUserById(req.params.id);
     return res.status(200).json(user);
@@ -33,11 +25,7 @@ const getUserById = async (
   }
 };
 
-const getAllCreatorEvents = async (
-  req: Request<IdParams>,
-  res: Response<IEvent[]>,
-  next: NextFunction
-) => {
+const getAllCreatorEvents = async (req: Request<IdParams>, res: Response<IEvent[]>, next: NextFunction) => {
   try {
     const events = await userService.getAllCreatorEvents(req.params.id);
     return res.status(200).json(events);
@@ -46,11 +34,7 @@ const getAllCreatorEvents = async (
   }
 };
 
-const getAllCreatorEventsProtected = async (
-  req: AuthenticatedRequest,
-  res: Response<IEvent[]>,
-  next: NextFunction
-) => {
+const getAllCreatorEventsProtected = async (req: AuthenticatedRequest, res: Response<IEvent[]>, next: NextFunction) => {
   try {
     const events = await userService.getAllCreatorEventsProtected(req.user!.id);
     return res.status(200).json(events);
@@ -59,11 +43,7 @@ const getAllCreatorEventsProtected = async (
   }
 };
 
-const getAllEvents = async (
-  req: AuthenticatedRequest,
-  res: Response<IEvent[]>,
-  next: NextFunction
-) => {
+const getAllEvents = async (req: AuthenticatedRequest, res: Response<IEvent[]>, next: NextFunction) => {
   try {
     const events = await userService.getAllEvents(req.user!.id);
     return res.status(200).json(events);
@@ -72,11 +52,7 @@ const getAllEvents = async (
   }
 };
 
-const getAllMessages = async (
-  req: AuthenticatedRequest,
-  res: Response<IMessage[]>,
-  next: NextFunction
-) => {
+const getAllMessages = async (req: AuthenticatedRequest, res: Response<IMessage[]>, next: NextFunction) => {
   try {
     const messages = await userService.getAllMessages(req.user!.id);
     return res.status(200).json(messages);
@@ -85,11 +61,7 @@ const getAllMessages = async (
   }
 };
 
-const getAllNotifications = async (
-  req: AuthenticatedRequest,
-  res: Response<INotification[]>,
-  next: NextFunction
-) => {
+const getAllNotifications = async (req: AuthenticatedRequest, res: Response<INotification[]>, next: NextFunction) => {
   try {
     console.log(req.user!);
 
@@ -126,11 +98,7 @@ const patchUser = async (
   }
 };
 
-const deleteUser = async (
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
-) => {
+const deleteUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     await userService.deleteUser(req.user!.id);
     return res.status(200).json({ success: true });

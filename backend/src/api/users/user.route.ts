@@ -6,29 +6,13 @@ const router = Router();
 
 router.get("/", userController.getAllUsers);
 
-router.get(
-  "/messages",
-  authMiddleware.authenticate,
-  userController.getAllMessages
-);
+router.get("/messages", authMiddleware.authenticate, userController.getAllMessages);
 
-router.get(
-  "/events",
-  authMiddleware.authenticate,
-  userController.getAllCreatorEventsProtected
-);
+router.get("/events", authMiddleware.authenticate, userController.getAllCreatorEventsProtected);
 
-router.get(
-  "/events/participent",
-  authMiddleware.authenticate,
-  userController.getAllEvents
-);
+router.get("/events/participent", authMiddleware.authenticate, userController.getAllEvents);
 
-router.get(
-  "/notifications",
-  authMiddleware.authenticate,
-  userController.getAllNotifications
-);
+router.get("/notifications", authMiddleware.authenticate, userController.getAllNotifications);
 
 router.get("/:id", userController.getUserById);
 
