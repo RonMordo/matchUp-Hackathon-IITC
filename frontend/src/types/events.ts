@@ -1,12 +1,10 @@
-// src/types/event.ts
-// src/types/event.ts
-import type { Hobby } from "./hobbies"; 
+import type { Hobby } from "./hobbies";
 
 export interface Event {
   _id: string;
   title: string;
   description?: string;
-  hobby: Hobby; // ✅ במקום string
+  hobby: Hobby;
   creator: string;
   location: {
     type: "Point";
@@ -14,6 +12,7 @@ export interface Event {
   };
   address: string;
   time: Date | string;
+  duration: number;
   minParticipants: number;
   maxParticipants: number;
   acceptedParticipants: string[];
@@ -36,6 +35,7 @@ export interface CreateEventDto {
   };
   address: string;
   time: Date;
+  duration: number; // Duration in minutes
   minParticipants: number;
   maxParticipants: number;
   status?: "open" | "closed" | "cancelled" | "full";

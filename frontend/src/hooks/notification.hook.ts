@@ -1,10 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { NotificationService } from "@/services/notification.service";
-import type {
-  Notification,
-  CreateNotificationDto,
-  UpdateNotificationDto,
-} from "@/types/index";
+import type { UpdateNotificationDto } from "@/types/index";
 
 export const useNotifications = () => {
   return useQuery({
