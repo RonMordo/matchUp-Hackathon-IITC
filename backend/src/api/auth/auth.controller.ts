@@ -63,48 +63,4 @@ const me = async (
   }
 };
 
-const sendOtp = async (
-  req: Request<{}, {}, { phone: string }>,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    await authService.sendOtp(req.body.phone);
-    return res.status(200).json({ message: "OTP send successfully" });
-  } catch (err) {
-    return next(err);
-  }
-};
-
-const verifyOtp = async (
-  req: Request<{}, {}, { phone: string; code: string }>,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { phone, code } = req.body;
-    const varificationCheck = await authService.verifyOtp(phone, code);
-    if (varificationCheck.status === "approved") {
-      const phoneHash = authService.hashPhone(phone);
-      const token = authService.generateToken({ id: phoneHash, email: phone });
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "strict",
-        maxAge: 1000 * 60 * 60,
-      });
-      return res.status(200).json({ success: true });
-    }
-  } catch (err) {
-    return next(err);
-  }
-};
-
-export const authController = {
-  login,
-  register,
-  logout,
-  me,
-  sendOtp,
-  verifyOtp,
-};
+export const authController = { login, register, logout, me };
