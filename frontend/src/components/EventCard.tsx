@@ -117,7 +117,12 @@ export function EventCard({
           <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-xl bg-white dark:bg-gray-900">
             <div className="relative">
               {event.imageUrl ? (
-                <img src={event.imageUrl} alt={event.title} className="w-full h-60 object-cover" loading="lazy" />
+                <img
+                  src={event.imageUrl}
+                  alt={event.title}
+                  className="w-full h-60 object-cover"
+                  loading="lazy"
+                />
               ) : (
                 <div className="w-full h-60 bg-gray-200 dark:bg-gray-800" />
               )}
