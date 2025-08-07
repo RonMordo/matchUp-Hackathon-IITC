@@ -8,7 +8,9 @@ const GOOGLE_API = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 
 export default function EventMap() {
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [userLocation, setUserLocation] = useState<
+    { lat: number; lng: number } | google.maps.LatLngLiteral | undefined
+  >(undefined);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const { user } = useAuth();
   const userId = user?._id;
@@ -40,7 +42,7 @@ export default function EventMap() {
     <APIProvider apiKey={GOOGLE_API}>
       <Map
         mapId={MAP_ID}
-        defaultCenter={userLocation ?? { lat: 32.08, lng: 34.78 }}
+        defaultCenter={userLocation || { lat: 32.0853, lng: 34.7818 }}
         defaultZoom={13}
         style={{ height: "100vh", width: "100vw" }}
       >
@@ -53,9 +55,18 @@ export default function EventMap() {
         {events.map((event) => {
           const [lng, lat] = event.location?.coordinates || [];
           if (!lat || !lng) return null;
+          const isUserEvent = event.creator === userId;
 
-          const color = event.status === "open" ? "green" : event.status === "cancelled" ? "red" : "gray";
-
+          let color: string;
+          if (isUserEvent) {
+            color = "purple";
+          } else if (event.status === "open") {
+            color = "green";
+          } else if (event.status === "cancelled") {
+            color = "red";
+          } else {
+            color = "gray";
+          }
           const isSelected = selectedEventId === event._id;
 
           return (

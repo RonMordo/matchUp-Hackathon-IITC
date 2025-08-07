@@ -11,7 +11,7 @@ export function GoogleMapsProvider({ children }: GoogleMapsProviderProps) {
     <APIProvider apiKey={googleMapsApiKey} libraries={["places"]}>
       <div style={{ display: "none" }}>
         <Map
-          defaultCenter={{ lat: 32.0853, lng: 34.7818 }} // Tel Aviv coordinates
+          //defaultCenter={{ lat: 32.0853, lng: 34.7818 }} // Tel Aviv coordinates
           defaultZoom={10}
           mapId="hidden-map"
         />
