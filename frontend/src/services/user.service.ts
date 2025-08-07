@@ -21,8 +21,10 @@ export const UserService = {
   async getAllEvents(id: string): Promise<Event[]> {
     return await axiosInstance.get(`/users/${id}/events`);
   },
-
-  async sendMessage(data: any): Promise<Message> {
+  async getUserParticipatedEvents(): Promise<any[]> {
+    return await axiosInstance.get("/users/events/participent");
+  },
+  async sendMessage(data: any): Promise<any> {
     return await axiosInstance.post("/users/messages", data);
   },
 

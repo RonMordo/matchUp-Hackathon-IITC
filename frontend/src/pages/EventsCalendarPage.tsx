@@ -13,7 +13,8 @@ import {
   DialogDescription,
   DialogClose,
 } from "@/components/ui/dialog";
-import { mockEvents } from "../data/mockData";
+
+import { useUserEventsProtected, useUserParticipatedEvents } from "@/hooks/user.hook";
 
 const locales = { "en-US": enUS };
 
@@ -54,13 +55,22 @@ export function EventsCalendarPage() {
 
   const [selectedEvent, setSelectedEvent] = useState<CalendarEventExtended | null>(null);
 
-  const events: CalendarEventExtended[] = useMemo(() => {
-    return mockEvents.map((e) => ({
+  // שימוש בקריאות API אמיתיות
+  const { data: createdEvents = [], isLoading: loadingCreated } = useUserEventsProtected();
+  const { data: participatedEvents = [], isLoading: loadingParticipated } = useUserParticipatedEvents();
+
+  // איחוד שני מערכי האירועים
+  const allEvents = useMemo(() => {
+    const combined = [...(createdEvents || []), ...(participatedEvents || [])];
+
+    // הסרת כפילויות לפי _id
+    const uniqueMap = new Map<string, MyEvent>();
+    combined.forEach((e) => {
+      uniqueMap.set(e._id, e);
+    });
+
+    return Array.from(uniqueMap.values()).map((e) => ({
       ...e,
-      location: {
-        type: "Point",
-        coordinates: [e.location.coordinates[0], e.location.coordinates[1]] as [number, number],
-      },
       start: new Date(e.time),
       end: new Date(e.time),
       title: e.title + (e.status === "open" ? " 🟢" : " 🔴"),
@@ -68,11 +78,13 @@ export function EventsCalendarPage() {
       createdAt: new Date(e.createdAt),
       updatedAt: new Date(e.updatedAt),
       status: e.status === "open" ? "open" : "closed",
-    }));
-  }, []);
+    })) as CalendarEventExtended[];
+  }, [createdEvents, participatedEvents]);
+
+  const loading = loadingCreated || loadingParticipated;
 
   const dayPropGetter = (date: Date) => {
-    const hasEvent = events.some((e) => e.start && isSameDay(e.start, date));
+    const hasEvent = allEvents.some((e) => e.start && isSameDay(e.start, date));
     if (hasEvent)
       return {
         style: {
@@ -101,6 +113,8 @@ export function EventsCalendarPage() {
     };
   };
 
+  if (loading) return <div className="text-center mt-10">Loading events...</div>;
+
   return (
     <div
       className="w-screen h-screen p-8 bg-gradient-to-br from-blue-100 via-indigo-200 to-purple-300 flex flex-col"
@@ -121,7 +135,7 @@ export function EventsCalendarPage() {
       >
         <Calendar
           localizer={localizer}
-          events={events}
+          events={allEvents}
           startAccessor="start"
           endAccessor="end"
           style={{ height: "100%" }}
@@ -150,7 +164,10 @@ export function EventsCalendarPage() {
             <p className="mt-4 text-sm text-gray-600 leading-relaxed">
               📍 <span className="font-semibold">{selectedEvent?.address}</span>
               <br />
-              ⏰ <span className="font-semibold">{selectedEvent ? selectedEvent.time.toLocaleString() : "N/A"}</span>
+              ⏰{" "}
+              <span className="font-semibold">
+                {selectedEvent ? selectedEvent.time.toLocaleString() : "N/A"}
+              </span>
               <br />
               Status: <span className="capitalize font-semibold">{selectedEvent?.status}</span>
             </p>
