@@ -12,15 +12,11 @@ import { formatDistanceToNow } from "date-fns";
 import type { Notification } from "@/types";
 
 export const NotificationDropdown = () => {
-  const { user } = useAuth();
   const { data: notifications, isLoading } = useUserNotifications();
   const toggleReadNotification = useToggleReadNotification();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Filter only unread notifications
-  const unreadNotifications = notifications?.filter(
-    (notification) => notification.status === "unread"
-  ) || [];
+  const unreadNotifications = notifications?.filter((notification) => notification.status === "unread") || [];
 
   const unreadCount = unreadNotifications.length;
 
@@ -74,19 +70,13 @@ export const NotificationDropdown = () => {
         className="w-80 mt-2 bg-white dark:bg-black border border-orange-300 rounded-md shadow-lg max-h-96 overflow-y-auto"
       >
         <div className="p-3 border-b border-orange-200 dark:border-orange-700">
-          <h3 className="font-semibold text-orange-600 dark:text-orange-400">
-            Notifications
-          </h3>
+          <h3 className="font-semibold text-orange-600 dark:text-orange-400">Notifications</h3>
         </div>
 
         {isLoading ? (
-          <div className="p-4 text-center text-gray-500">
-            Loading notifications...
-          </div>
+          <div className="p-4 text-center text-gray-500">Loading notifications...</div>
         ) : unreadNotifications.length === 0 ? (
-          <div className="p-4 text-center text-gray-500">
-            No unread notifications
-          </div>
+          <div className="p-4 text-center text-gray-500">No unread notifications</div>
         ) : (
           <div className="max-h-80 overflow-y-auto">
             {unreadNotifications.map((notification: Notification) => (
@@ -94,9 +84,7 @@ export const NotificationDropdown = () => {
                 key={notification._id}
                 onClick={() => handleNotificationClick(notification)}
                 className={`p-3 border-b border-gray-100 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
-                  notification.status === "unread"
-                    ? "bg-orange-50 dark:bg-orange-900/10"
-                    : ""
+                  notification.status === "unread" ? "bg-orange-50 dark:bg-orange-900/10" : ""
                 }`}
               >
                 <div className="flex items-start gap-3">
