@@ -3,7 +3,6 @@ import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from "@vis.gl/react
 import { useEvents } from "@/hooks/event.hook";
 import { useAuth } from "@/context/AuthContext";
 import { EventCard } from "@/components/EventCard";
-import { ms } from "date-fns/locale";
 
 const GOOGLE_API = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const MAP_ID = import.meta.env.VITE_MAP_ID;
