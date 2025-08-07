@@ -1,28 +1,22 @@
 import { useEffect, useState } from "react";
-import { APIProvider, Map, AdvancedMarker, InfoWindow } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from "@vis.gl/react-google-maps";
 import { useEvents } from "@/hooks/event.hook";
 import { useAuth } from "@/context/AuthContext";
-import { EventCard } from "@/components/EventCard";
-import { Navigation, Info, Calendar, Users } from "lucide-react";
-import type { Event } from "@/types";
+import { EventCard } from "@/components/EventCard"; // adjust path as needed
 
 const GOOGLE_API = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 
 export default function EventMap() {
-  const [userLocation, setUserLocation] = useState<
-    { lat: number; lng: number } | google.maps.LatLngLiteral | undefined
-  >(undefined);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 32.0853, lng: 34.7818 });
-  const [mapZoom, setMapZoom] = useState(13);
   const { user } = useAuth();
   const userId = user?._id;
 
   const { data: allEvents = [] } = useEvents();
-  
+
   // Filter out full events and only show events we want to display
-  const events = allEvents.filter(event => event.status !== "full");
+  const events = allEvents.filter((event) => event.status !== "full");
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -112,7 +106,8 @@ export default function EventMap() {
             const [lng, lat] = event.location?.coordinates || [];
             if (!lat || !lng) return null;
 
-            const color = getEventColor(event);
+            const color = event.status === "open" ? "green" : event.status === "cancelled" ? "red" : "gray";
+
             const isSelected = selectedEventId === event._id;
 
             return (
@@ -122,19 +117,19 @@ export default function EventMap() {
                 onClick={() => setSelectedEventId(isSelected ? null : event._id)}
               >
                 <div className="relative">
-                                      <div
-                      className={`w-10 h-10 rounded-full border-2 border-white shadow-lg flex items-center justify-center ${
-                        color === "purple"
-                          ? "bg-purple-500"
-                          : color === "green"
-                          ? "bg-green-500"
-                          : color === "orange"
-                          ? "bg-orange-500"
-                          : color === "red"
-                          ? "bg-red-500"
-                          : "bg-gray-500"
-                      }`}
-                    >
+                  <div
+                    className={`w-10 h-10 rounded-full border-2 border-white shadow-lg flex items-center justify-center ${
+                      color === "purple"
+                        ? "bg-purple-500"
+                        : color === "green"
+                        ? "bg-green-500"
+                        : color === "orange"
+                        ? "bg-orange-500"
+                        : color === "red"
+                        ? "bg-red-500"
+                        : "bg-gray-500"
+                    }`}
+                  >
                     <Calendar className="w-5 h-5 text-white" />
                   </div>
                   {isSelected && (

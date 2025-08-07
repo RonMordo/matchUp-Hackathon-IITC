@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import type { Event } from "@/types";
-import { useUpdateEvent, useDeleteEvent } from "../hooks/event.hook";
 
 type Props = {
   event: Event;
@@ -22,7 +21,6 @@ type Props = {
   onEdit: () => void;
   onDelete: () => void;
   onJoin: () => void;
-  showJoinButton?: boolean; // ברירת מחדל true
 };
 
 export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinButton = true }: Props) {
@@ -85,6 +83,7 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinBut
         )}
       </div>
 
+      {/* Content */}
       <div className="px-5 pt-4 pb-5">
         <h3 className="text-2xl font-extrabold text-gray-900 dark:text-white">{event.title}</h3>
         <p className="mt-1 text-sm text-gray-700 dark:text-gray-400">📍 {event.address}</p>
@@ -100,7 +99,9 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinBut
         )}
       </div>
 
+      {/* Action buttons */}
       <div className="absolute top-3 right-3 flex flex-col items-center gap-2 z-20">
+        {/* Info Dialog */}
         <Dialog open={openDetails} onOpenChange={setOpenDetails}>
           <DialogTrigger asChild>
             <Button
@@ -114,14 +115,10 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinBut
           </DialogTrigger>
 
           <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-xl bg-white dark:bg-gray-900">
+            {/* Image Hero */}
             <div className="relative">
               {event.imageUrl ? (
-                <img
-                  src={event.imageUrl}
-                  alt={event.title}
-                  className="w-full h-60 object-cover"
-                  loading="lazy"
-                />
+                <img src={event.imageUrl} alt={event.title} className="w-full h-60 object-cover" loading="lazy" />
               ) : (
                 <div className="w-full h-60 bg-gray-200 dark:bg-gray-800" />
               )}
@@ -133,6 +130,7 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinBut
               </div>
             </div>
 
+            {/* Body Content */}
             <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6 text-gray-700 dark:text-gray-300">
                 <section>
@@ -151,7 +149,7 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinBut
               <aside className="space-y-6 text-sm text-gray-700 dark:text-gray-300">
                 <section>
                   <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Hobby</h3>
-                  <p className="mt-2">{hobbyName}</p>
+                  <p className="mt-2">{event.hobby}</p>
                 </section>
                 <section>
                   <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Status</h3>
@@ -209,6 +207,7 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinBut
           </DialogContent>
         </Dialog>
 
+        {/* Edit & Delete buttons */}
         {userId === event.creator && (
           <>
             <Button
@@ -247,7 +246,7 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinBut
                   </AlertDialogCancel>
                   <AlertDialogAction
                     className="bg-red-700 hover:bg-red-600 text-white rounded-md px-4 py-2"
-                    onClick={() => deleteEvent(event._id)}
+                    onClick={onDelete}
                   >
                     Delete
                   </AlertDialogAction>

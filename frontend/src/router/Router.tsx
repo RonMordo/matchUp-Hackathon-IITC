@@ -30,7 +30,6 @@ export const Router = createBrowserRouter([
         element: <RootLayout />,
         children: [
           { index: true, element: <HomePage /> },
-          { path: "/profile", element: <ProfilePage /> },
           { path: "/events/map", element: <EventMap /> },
           { path: "/events/", element: <EventsPage /> },
           { path: "/events/calendar", element: <EventsCalendarPage /> },
