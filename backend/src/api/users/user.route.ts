@@ -15,7 +15,13 @@ router.get(
 router.get(
   "/events",
   authMiddleware.authenticate,
-  userController.getAllEventsProtected
+  userController.getAllCreatorEventsProtected
+);
+
+router.get(
+  "/events/participent",
+  authMiddleware.authenticate,
+  userController.getAllEvents
 );
 
 router.get(
@@ -26,7 +32,7 @@ router.get(
 
 router.get("/:id", userController.getUserById);
 
-router.get("/:id/events", userController.getAllEvents);
+router.get("/:id/events", userController.getAllCreatorEvents);
 
 // Protected
 router.use(authMiddleware.authenticate);

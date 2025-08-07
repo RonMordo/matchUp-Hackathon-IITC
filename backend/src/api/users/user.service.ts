@@ -100,7 +100,7 @@ const deleteUser = async (id: string) => {
   }
 };
 
-const getAllEvents = (id: string) => {
+const getAllCreatorEvents = (id: string) => {
   return EventModel.find({ creator: id })
     .select(
       "-pendingParticipants -acceptedParticipants -isPrivate -creator -minParticipants -maxParticipants -__v"
@@ -108,10 +108,14 @@ const getAllEvents = (id: string) => {
     .populate("hobby");
 };
 
-const getAllEventsProtected = (id: string) => {
+const getAllCreatorEventsProtected = (id: string) => {
   return EventModel.find({ creator: id })
     .populate({ path: "pendingParticipants", select: "-password -__v" })
     .populate({ path: "acceptedParticipants", select: "-password -__v" });
+};
+
+const getAllEvents = (id: string) => {
+  return EventModel.find({ acceptedParticipants: id }).select("-__v");
 };
 
 const getAllMessages = (id: string) => {
@@ -146,8 +150,9 @@ const getAllNotifications = (id: string) => {
 export const userService = {
   getAllUsers,
   getUserById,
+  getAllCreatorEvents,
+  getAllCreatorEventsProtected,
   getAllEvents,
-  getAllEventsProtected,
   getAllMessages,
   getAllNotifications,
   createUser,

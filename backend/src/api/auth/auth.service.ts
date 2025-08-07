@@ -4,6 +4,7 @@ import { JwtPayload, LoginInput, RegisterInput } from "./auth.types.js";
 import { AppError } from "../../utils/appError.js";
 import { userService } from "../users/user.service.js";
 import bcrypt from "bcrypt";
+import twilio from "../../services/twilio.js";
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -44,4 +45,28 @@ const login = async (userData: LoginInput) => {
   return token;
 };
 
-export const authService = { register, login, verifyToken, hashPassword };
+const sendOtp = async (phone: string) => {
+  if (!phone) {
+    throw new AppError("Invalid phone number", 400);
+  }
+  return await twilio.verify.v2
+    .services(process.env.TWILIO_VERIFY_SERVICE_SID!)
+    .verifications.create({ to: phone, channel: "sms" });
+};
+
+const verifyOtp = async (phone: string, code: string) => {
+  if (!phone || !code) throw new AppError("Invalid phone number or code", 400);
+
+  return twilio.verify.v2
+    .services(process.env.TWILIO_VERIFY_SERVICE_SID!)
+    .verificationChecks.create({ to: phone, code });
+};
+
+export const authService = {
+  register,
+  login,
+  verifyToken,
+  hashPassword,
+  sendOtp,
+  verifyOtp,
+};
