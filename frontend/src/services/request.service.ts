@@ -1,9 +1,5 @@
 import axiosInstance from "@/utils/axiosInstance";
-import type {
-  Request,
-  CreateRequestDto,
-  UpdateRequestDto,
-} from "@/types/index";
+import type { Request, CreateRequestDto, UpdateRequestDto } from "@/types/index";
 
 export const RequestService = {
   async getAllRequests(): Promise<Request[]> {
