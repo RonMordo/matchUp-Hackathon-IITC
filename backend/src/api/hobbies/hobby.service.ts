@@ -49,10 +49,15 @@ const deleteHobby = async (id: string) => {
   }
 };
 
+const createHobbies = async (hobbies: CreateHobbyInput[]) => {
+  return await Promise.all(hobbies.map((hobby) => createHobby(hobby)));
+};
+
 export const hobbyService = {
   getAllHobbys,
   getHobbyById,
   createHobby,
+  createHobbies,
   updateHobby,
   patchHobby,
   deleteHobby,
