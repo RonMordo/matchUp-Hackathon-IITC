@@ -34,21 +34,25 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinBut
   const { mutate: updateEvent } = useUpdateEvent();
   const { mutate: deleteEvent } = useDeleteEvent();
 
-  const handleJoinClick = () => {
+  const handleToggleJoinClick = () => {
     if (!userId) {
       alert("You must be logged in to join this event.");
       return;
     }
-    if (!userJoined) {
-      updateEvent({
-        id: event._id,
-        data: {
-          acceptedParticipants: [...event.acceptedParticipants, userId],
-        },
-      });
-      setOpenDetails(false);
-      if (onJoin) onJoin();
-    }
+
+    const updatedParticipants = userJoined
+      ? event.acceptedParticipants.filter((id) => id.toString() !== userId.toString()) // UNJOIN
+      : [...event.acceptedParticipants, userId]; // JOIN
+
+    updateEvent({
+      id: event._id,
+      data: {
+        acceptedParticipants: updatedParticipants,
+      },
+    });
+
+    setOpenDetails(false);
+    if (onJoin) onJoin();
   };
 
   const hobbyName = event.hobby?.name || "Unknown Hobby";
@@ -147,21 +151,36 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin, showJoinBut
                   <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Status</h3>
                   <p className="mt-2 capitalize">{event.status}</p>
                 </section>
-
-                {showJoinButton && userId && !userJoined && (
-                  <Button className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white" onClick={handleJoinClick}>
-                    Join Event
-                  </Button>
+                {showJoinButton && userId && userId !== event.creator && (
+                  <>
+                    {!userJoined ? (
+                      <Button
+                        className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white"
+                        onClick={handleToggleJoinClick}
+                      >
+                        Join Event
+                      </Button>
+                    ) : (
+                      <Button
+                        className="w-full mt-4 bg-red-600 hover:bg-red-700 text-white"
+                        onClick={handleToggleJoinClick}
+                      >
+                        Leave Event
+                      </Button>
+                    )}
+                  </>
                 )}
-                {showJoinButton && !userId && (
+
+                {showJoinButton && (!userId || userId === event.creator) && (
                   <Button
                     className="w-full mt-4 bg-gray-400 cursor-not-allowed text-white"
-                    onClick={() => alert("You must be logged in to join this event.")}
+                    onClick={() => alert("You cannot join your own event.")}
                     disabled
                   >
-                    Join Event
+                    {userId === event.creator ? "You are the organizer" : "Join Event"}
                   </Button>
                 )}
+
                 {showJoinButton && userId && userJoined && (
                   <div className="text-green-600 font-semibold mt-4 text-center">
                     You are registered for this event.
