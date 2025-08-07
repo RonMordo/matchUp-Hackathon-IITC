@@ -8,7 +8,6 @@ import {
 import { NavLink, useNavigate } from "react-router";
 import Logo from "@/img/logo.png";
 import { ModeToggle } from "./ToggleTheme";
-import { NotificationDropdown } from "./NotificationDropdown";
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
@@ -26,9 +25,7 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <NavLink to="/" className="flex items-center space-x-2">
           <img src={Logo} alt="logo" className="h-10 w-auto" />
-          <span className="text-lg font-bold text-orange-500 hidden sm:inline">
-            MatchUp
-          </span>
+          <span className="text-lg font-bold text-orange-500 hidden sm:inline">MatchUp</span>
         </NavLink>
 
         <div className="hidden md:flex gap-6 items-center text-orange-500">
@@ -49,7 +46,6 @@ export const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <NotificationDropdown />
           <ModeToggle />
 
           <DropdownMenu>
@@ -67,9 +63,7 @@ export const Navbar = () => {
               align="end"
               className="w-36 mt-2 bg-white dark:bg-black border border-orange-300 rounded-md shadow-md"
             >
-              <div className="cursor-pointer font-semibold hover:bg-gray-100 dark:hover:bg-zinc-800 p-2 rounded text-orange-500">
-                <NavLink to="/profile">Profile</NavLink>
-              </div>
+              <div className="px-3 py-2 font-medium text-sm text-orange-500">{user?.name}</div>
               <DropdownMenuItem
                 onClick={() => {
                   logout();

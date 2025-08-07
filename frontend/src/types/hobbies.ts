@@ -3,7 +3,7 @@ export interface Hobby {
   name: string;
   icon: string;
   category: string;
-  createdAt: string;
+  createdAt: string; // or Date if you're not serializing to JSON
   updatedAt: string;
 }
 

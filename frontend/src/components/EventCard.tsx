@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import type { Event } from "@/types";
-import { useUpdateEvent, useDeleteEvent } from "../hooks/event.hook";
 
 type Props = {
   event: Event;
@@ -22,26 +21,13 @@ type Props = {
   onEdit: () => void;
   onDelete: () => void;
   onJoin: () => void;
-  showJoinButton?: boolean; // ברירת מחדל true
 };
 
-export function EventCard({
-  event,
-  userId,
-  onEdit,
-  onDelete,
-  onJoin,
-  showJoinButton = true,
-}: Props) {
+export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
   const [openDetails, setOpenDetails] = useState(false);
 
   const participantsCount = event.acceptedParticipants.length;
-  const userJoined = userId
-    ? event.acceptedParticipants.some((id) => id.toString() === userId.toString())
-    : false;
-
-  const { mutate: updateEvent } = useUpdateEvent();
-  const { mutate: deleteEvent } = useDeleteEvent();
+  const userJoined = userId ? event.acceptedParticipants.includes(userId) : false;
 
   const handleJoinClick = () => {
     if (!userId) {
@@ -49,23 +35,15 @@ export function EventCard({
       return;
     }
     if (!userJoined) {
-      updateEvent({
-        id: event._id,
-        data: {
-          acceptedParticipants: [...event.acceptedParticipants, userId],
-        },
-      });
+      onJoin();
       setOpenDetails(false);
-      if (onJoin) onJoin();
     }
   };
-
-  const hobbyName = typeof event.hobby === "string" ? "Unknown Hobby" : event.hobby.name;
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-gray-300 bg-white/60 backdrop-blur-md shadow-lg hover:shadow-xl transition-shadow">
       <div className="absolute top-3 left-3 bg-amber-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg z-10">
-        {hobbyName}
+        {event.hobby}
       </div>
 
       <div className="relative">
@@ -86,6 +64,7 @@ export function EventCard({
         )}
       </div>
 
+      {/* Content */}
       <div className="px-5 pt-4 pb-5">
         <h3 className="text-2xl font-extrabold text-gray-900 dark:text-white">{event.title}</h3>
         <p className="mt-1 text-sm text-gray-700 dark:text-gray-400">📍 {event.address}</p>
@@ -101,7 +80,9 @@ export function EventCard({
         )}
       </div>
 
+      {/* Action buttons */}
       <div className="absolute top-3 right-3 flex flex-col items-center gap-2 z-20">
+        {/* Info Dialog */}
         <Dialog open={openDetails} onOpenChange={setOpenDetails}>
           <DialogTrigger asChild>
             <Button
@@ -115,6 +96,7 @@ export function EventCard({
           </DialogTrigger>
 
           <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-xl bg-white dark:bg-gray-900">
+            {/* Image Hero */}
             <div className="relative">
               {event.imageUrl ? (
                 <img src={event.imageUrl} alt={event.title} className="w-full h-60 object-cover" loading="lazy" />
@@ -129,6 +111,7 @@ export function EventCard({
               </div>
             </div>
 
+            {/* Body Content */}
             <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6 text-gray-700 dark:text-gray-300">
                 <section>
@@ -147,19 +130,20 @@ export function EventCard({
               <aside className="space-y-6 text-sm text-gray-700 dark:text-gray-300">
                 <section>
                   <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Hobby</h3>
-                  <p className="mt-2">{hobbyName}</p>
+                  <p className="mt-2">{event.hobby}</p>
                 </section>
                 <section>
                   <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Status</h3>
                   <p className="mt-2 capitalize">{event.status}</p>
                 </section>
 
-                {showJoinButton && userId && !userJoined && (
+                {/* Join button */}
+                {userId && !userJoined && (
                   <Button className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white" onClick={handleJoinClick}>
                     Join Event
                   </Button>
                 )}
-                {showJoinButton && !userId && (
+                {!userId && (
                   <Button
                     className="w-full mt-4 bg-gray-400 cursor-not-allowed text-white"
                     onClick={() => alert("You must be logged in to join this event.")}
@@ -168,7 +152,7 @@ export function EventCard({
                     Join Event
                   </Button>
                 )}
-                {showJoinButton && userId && userJoined && (
+                {userId && userJoined && (
                   <div className="text-green-600 font-semibold mt-4 text-center">
                     You are registered for this event.
                   </div>
@@ -178,6 +162,7 @@ export function EventCard({
           </DialogContent>
         </Dialog>
 
+        {/* Edit & Delete buttons */}
         {userId === event.creator && (
           <>
             <Button
@@ -216,7 +201,7 @@ export function EventCard({
                   </AlertDialogCancel>
                   <AlertDialogAction
                     className="bg-red-700 hover:bg-red-600 text-white rounded-md px-4 py-2"
-                    onClick={() => deleteEvent(event._id)}
+                    onClick={onDelete}
                   >
                     Delete
                   </AlertDialogAction>

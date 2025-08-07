@@ -7,7 +7,7 @@ export interface INotification {
   event?: Types.ObjectId;
   message?: Types.ObjectId;
   request?: Types.ObjectId;
-  status: "unread" | "read";
+  status: "unread" | "raed" | "archived";
   content: string;
   createdAt: Date;
   updatedAt: Date;
