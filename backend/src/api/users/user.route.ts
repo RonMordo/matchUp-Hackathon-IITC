@@ -18,6 +18,8 @@ router.get(
   userController.getAllEventsProtected
 );
 
+router.get("/notifications", userController.getAllNotifications);
+
 router.get("/:id", userController.getUserById);
 
 router.get("/:id/events", userController.getAllEvents);
