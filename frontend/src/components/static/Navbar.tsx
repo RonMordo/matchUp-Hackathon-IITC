@@ -19,6 +19,8 @@ export const Navbar = () => {
     { label: "Map", to: "/events/map" },
     { label: "All Events", to: "/events/", end: true },
     { label: "Calendar", to: "/events/calendar" },
+    { label: "My Events", to: "/events/My" },
+    { label: "Search", to: "/users/search" },
   ];
 
   return (
@@ -26,9 +28,7 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <NavLink to="/" className="flex items-center space-x-2">
           <img src={Logo} alt="logo" className="h-10 w-auto" />
-          <span className="text-lg font-bold text-orange-500 hidden sm:inline">
-            MatchUp
-          </span>
+          <span className="text-lg font-bold text-orange-500 hidden sm:inline">MatchUp</span>
         </NavLink>
 
         <div className="hidden md:flex gap-6 items-center text-orange-500">

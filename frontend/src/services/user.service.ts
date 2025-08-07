@@ -1,5 +1,5 @@
 import axiosInstance from "@/utils/axiosInstance";
-import type { User, UserResponse } from "@/types/index";
+import type { Message, Notification, User, UserResponse } from "@/types/index";
 
 export const UserService = {
   async getAllUsers(): Promise<UserResponse[]> {
@@ -10,19 +10,19 @@ export const UserService = {
     return await axiosInstance.get(`/users/${id}`);
   },
 
-  async getAllMessages(): Promise<any[]> {
+  async getAllMessages(): Promise<Message[]> {
     return await axiosInstance.get("/users/messages");
   },
 
-  async getAllEventsProtected(): Promise<any[]> {
+  async getAllEventsProtected(): Promise<Event[]> {
     return await axiosInstance.get("/users/events");
   },
 
-  async getAllEvents(id: string): Promise<any[]> {
+  async getAllEvents(id: string): Promise<Event[]> {
     return await axiosInstance.get(`/users/${id}/events`);
   },
 
-  async sendMessage(data: any): Promise<any> {
+  async sendMessage(data: any): Promise<Message> {
     return await axiosInstance.post("/users/messages", data);
   },
 
@@ -38,11 +38,15 @@ export const UserService = {
     return await axiosInstance.delete("/users");
   },
 
-  async getUserNotifications(): Promise<any[]> {
+  async getUserNotifications(): Promise<Notification[]> {
     return await axiosInstance.get("/users/notifications");
   },
 
   async toggleReadNotification(id: string): Promise<{ success: boolean }> {
     return await axiosInstance.patch(`/users/notifications/${id}`);
+  },
+
+  async getUserByName(name: string): Promise<UserResponse> {
+    return await axiosInstance.patch(`/users/search/${name}`);
   },
 };

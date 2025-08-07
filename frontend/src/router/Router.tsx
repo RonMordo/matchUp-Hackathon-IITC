@@ -9,6 +9,8 @@ import { EventsPage } from "@/pages/EventsPage";
 import EventsCalendarPage from "@/pages/EventsCalendarPage";
 import { MyEventsPage } from "@/pages/MyEventsPage";
 import ProfilePage from "@/pages/ProfilePage";
+import UserSearchPage from "@/pages/UserSearchPage";
+
 export const Router = createBrowserRouter([
   {
     path: "/auth",
@@ -33,6 +35,7 @@ export const Router = createBrowserRouter([
           { path: "/events/", element: <EventsPage /> },
           { path: "/events/calendar", element: <EventsCalendarPage /> },
           { path: "/events/My", element: <MyEventsPage /> },
+          { path: "/users/search", element: <UserSearchPage /> },
         ],
       },
     ],
