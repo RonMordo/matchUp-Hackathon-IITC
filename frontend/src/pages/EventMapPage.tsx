@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from "@vis.gl/react-google-maps";
 import { useEvents } from "@/hooks/event.hook";
 import { useAuth } from "@/context/AuthContext";
-import { EventCard } from "@/components/EventCard"; // adjust path as needed
+import { EventCard } from "@/components/EventCard";
+import { ms } from "date-fns/locale";
 
 const GOOGLE_API = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const MAP_ID = import.meta.env.VITE_MAP_ID;
@@ -30,7 +31,10 @@ export default function EventMap() {
         console.warn("❌ User denied geolocation:", err.message);
       }
     );
-  }, []);
+    const intevalID = setInterval(() => {}, 10000);
+    clearInterval(intevalID);
+    console.log("gettting new location");
+  }, [userLocation]);
 
   return (
     <APIProvider apiKey={GOOGLE_API}>
