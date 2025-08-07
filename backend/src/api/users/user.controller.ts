@@ -4,6 +4,8 @@ import { Request, Response, NextFunction } from "express";
 import { AuthenticatedRequest, IdParams } from "../../utils/globalTypes.js";
 import { IEvent } from "../events/event.types.js";
 import { CreateMessageInput, IMessage } from "../messages/message.types.js";
+import { notificationService } from "../notifications/notification.service.js";
+import { INotification } from "../notifications/notification.types.js";
 
 const getAllUsers = async (
   _req: Request,
@@ -31,26 +33,39 @@ const getUserById = async (
   }
 };
 
-const getAllEvents = async (
+const getAllCreatorEvents = async (
   req: Request<IdParams>,
   res: Response<IEvent[]>,
   next: NextFunction
 ) => {
   try {
-    const events = await userService.getAllEvents(req.params.id);
+    const events = await userService.getAllCreatorEvents(req.params.id);
     return res.status(200).json(events);
   } catch (err) {
     return next(err);
   }
 };
 
-const getAllEventsProtected = async (
+const getAllCreatorEventsProtected = async (
   req: AuthenticatedRequest,
   res: Response<IEvent[]>,
   next: NextFunction
 ) => {
   try {
-    const events = await userService.getAllEventsProtected(req.user!.id);
+    const events = await userService.getAllCreatorEventsProtected(req.user!.id);
+    return res.status(200).json(events);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const getAllEvents = async (
+  req: AuthenticatedRequest,
+  res: Response<IEvent[]>,
+  next: NextFunction
+) => {
+  try {
+    const events = await userService.getAllEvents(req.user!.id);
     return res.status(200).json(events);
   } catch (err) {
     return next(err);
@@ -65,6 +80,21 @@ const getAllMessages = async (
   try {
     const messages = await userService.getAllMessages(req.user!.id);
     return res.status(200).json(messages);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const getAllNotifications = async (
+  req: AuthenticatedRequest,
+  res: Response<INotification[]>,
+  next: NextFunction
+) => {
+  try {
+    console.log(req.user!);
+
+    const notifications = await userService.getAllNotifications(req.user!.id);
+    return res.status(200).json(notifications);
   } catch (err) {
     return next(err);
   }
@@ -122,14 +152,30 @@ const sendMessage = async (
   }
 };
 
+const toggleReadNotification = async (
+  req: AuthenticatedRequest<IdParams>,
+  res: Response<{ success: boolean }>,
+  next: NextFunction
+) => {
+  try {
+    await notificationService.toggleReadNotification(req.params.id);
+    return res.status(201).json({ success: true });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 export const userController = {
   getAllUsers,
   getUserById,
   getAllEvents,
-  getAllEventsProtected,
+  getAllCreatorEventsProtected,
+  getAllCreatorEvents,
   getAllMessages,
+  getAllNotifications,
   updateUser,
   patchUser,
   deleteUser,
   sendMessage,
+  toggleReadNotification,
 };

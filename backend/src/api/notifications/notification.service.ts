@@ -68,6 +68,13 @@ const deleteNotification = async (id: string) => {
   }
 };
 
+const toggleReadNotification = async (id: string) => {
+  const notification = await getNotificationById(id);
+  return patchNotification(id, {
+    status: notification.status === "unread" ? "read" : "unread",
+  });
+};
+
 export const notificationService = {
   getAllNotifications,
   getNotificationById,
@@ -75,4 +82,5 @@ export const notificationService = {
   updateNotification,
   patchNotification,
   deleteNotification,
+  toggleReadNotification,
 };

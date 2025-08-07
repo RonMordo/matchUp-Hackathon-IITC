@@ -15,12 +15,24 @@ router.get(
 router.get(
   "/events",
   authMiddleware.authenticate,
-  userController.getAllEventsProtected
+  userController.getAllCreatorEventsProtected
+);
+
+router.get(
+  "/events/participent",
+  authMiddleware.authenticate,
+  userController.getAllEvents
+);
+
+router.get(
+  "/notifications",
+  authMiddleware.authenticate,
+  userController.getAllNotifications
 );
 
 router.get("/:id", userController.getUserById);
 
-router.get("/:id/events", userController.getAllEvents);
+router.get("/:id/events", userController.getAllCreatorEvents);
 
 // Protected
 router.use(authMiddleware.authenticate);
@@ -28,6 +40,8 @@ router.use(authMiddleware.authenticate);
 router.post("/messages", userController.sendMessage);
 
 router.put("/", userController.updateUser);
+
+router.patch("/notifications/:id", userController.toggleReadNotification);
 
 router.patch("/", userController.patchUser);
 

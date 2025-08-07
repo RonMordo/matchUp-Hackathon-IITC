@@ -43,6 +43,19 @@ const createHobby = async (
   }
 };
 
+const createHobbies = async (
+  req: Request<{}, {}, CreateHobbyInput[]>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await hobbyService.createHobbies(req.body);
+    return res.status(201).json({ success: true });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const updateHobby = async (
   req: AuthenticatedRequest<IdParams, {}, CreateHobbyInput>,
   res: Response<IHobby>,
@@ -89,6 +102,7 @@ export const hobbyController = {
   getAllHobbys,
   getHobbyById,
   createHobby,
+  createHobbies,
   updateHobby,
   patchHobby,
   deleteHobby,

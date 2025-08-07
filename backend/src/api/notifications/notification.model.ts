@@ -34,7 +34,7 @@ const notificationSchema = new Schema<NotificationDocument, INotificationModel>(
     },
     status: {
       type: String,
-      enum: ["unread", "read", "archived"],
+      enum: ["unread", "read"],
       required: true,
     },
     content: {
