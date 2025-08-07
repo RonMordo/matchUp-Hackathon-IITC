@@ -40,10 +40,13 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
     }
   };
 
+  // 🧠 Get hobby name safely whether it's a string or object
+  const hobbyName = typeof event.hobby === "string" ? "Unknown Hobby" : event.hobby.name;
+
   return (
     <div className="relative overflow-hidden rounded-2xl border border-gray-300 bg-white/60 backdrop-blur-md shadow-lg hover:shadow-xl transition-shadow">
       <div className="absolute top-3 left-3 bg-amber-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg z-10">
-        {event.hobby}
+        {hobbyName}
       </div>
 
       <div className="relative">
@@ -64,7 +67,6 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
         )}
       </div>
 
-      {/* Content */}
       <div className="px-5 pt-4 pb-5">
         <h3 className="text-2xl font-extrabold text-gray-900 dark:text-white">{event.title}</h3>
         <p className="mt-1 text-sm text-gray-700 dark:text-gray-400">📍 {event.address}</p>
@@ -80,9 +82,7 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
         )}
       </div>
 
-      {/* Action buttons */}
       <div className="absolute top-3 right-3 flex flex-col items-center gap-2 z-20">
-        {/* Info Dialog */}
         <Dialog open={openDetails} onOpenChange={setOpenDetails}>
           <DialogTrigger asChild>
             <Button
@@ -96,7 +96,6 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
           </DialogTrigger>
 
           <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-xl bg-white dark:bg-gray-900">
-            {/* Image Hero */}
             <div className="relative">
               {event.imageUrl ? (
                 <img src={event.imageUrl} alt={event.title} className="w-full h-60 object-cover" loading="lazy" />
@@ -111,7 +110,6 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
               </div>
             </div>
 
-            {/* Body Content */}
             <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6 text-gray-700 dark:text-gray-300">
                 <section>
@@ -130,14 +128,13 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
               <aside className="space-y-6 text-sm text-gray-700 dark:text-gray-300">
                 <section>
                   <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Hobby</h3>
-                  <p className="mt-2">{event.hobby}</p>
+                  <p className="mt-2">{hobbyName}</p>
                 </section>
                 <section>
                   <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Status</h3>
                   <p className="mt-2 capitalize">{event.status}</p>
                 </section>
 
-                {/* Join button */}
                 {userId && !userJoined && (
                   <Button className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white" onClick={handleJoinClick}>
                     Join Event
@@ -162,7 +159,6 @@ export function EventCard({ event, userId, onEdit, onDelete, onJoin }: Props) {
           </DialogContent>
         </Dialog>
 
-        {/* Edit & Delete buttons */}
         {userId === event.creator && (
           <>
             <Button

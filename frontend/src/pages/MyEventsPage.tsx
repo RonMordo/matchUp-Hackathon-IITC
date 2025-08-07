@@ -13,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { EventCard } from "@/components/EventCard";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
+import type { Hobby } from "../types"; 
 
 type Event = {
   _id: string;
@@ -22,8 +23,8 @@ type Event = {
   address: string;
   time: string;
   date: string;
-  hobby: string;
-  imageUrl?: string;
+  hobby: Hobby; 
+  imageUrl: string;
   minParticipants: number;
   maxParticipants: number;
   creator: string;
@@ -36,6 +37,7 @@ type Event = {
   createdAt: string;
   updatedAt: string;
 };
+
 
 export function MyEventsPage() {
   const { user } = useAuth();
