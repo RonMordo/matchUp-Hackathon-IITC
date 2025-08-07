@@ -19,7 +19,10 @@ export default function EventMap() {
   const { user } = useAuth();
   const userId = user?._id;
 
-  const { data: events = [] } = useEvents();
+  const { data: allEvents = [] } = useEvents();
+  
+  // Filter out full events and only show events we want to display
+  const events = allEvents.filter(event => event.status !== "full");
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -55,30 +58,20 @@ export default function EventMap() {
       return "purple";
     } else if (event.status === "open") {
       return "green";
+    } else if (event.status === "closed") {
+      return "orange";
     } else if (event.status === "cancelled") {
       return "red";
+    } else {
+      return "gray"; // for full events or any other status
     }
   };
 
   const eventTypes = [
     { color: "purple", label: "My Events", status: "my" },
     { color: "green", label: "Open Events", status: "open" },
+    { color: "orange", label: "Closed Events", status: "closed" },
     { color: "red", label: "Cancelled Events", status: "cancelled" },
-  ];
-
-  const hiddenMapStyle = [
-    { featureType: "poi", elementType: "all", stylers: [{ visibility: "off" }] },
-    { featureType: "poi.business", stylers: [{ visibility: "off" }] },
-    { featureType: "poi.medical", stylers: [{ visibility: "off" }] },
-    { featureType: "poi.government", stylers: [{ visibility: "off" }] },
-    { featureType: "poi.school", stylers: [{ visibility: "off" }] },
-    { featureType: "transit", elementType: "all", stylers: [{ visibility: "off" }] },
-    { featureType: "road", elementType: "labels", stylers: [{ visibility: "off" }] },
-    { featureType: "road.local", stylers: [{ visibility: "off" }] },
-    { featureType: "road.highway", stylers: [{ visibility: "off" }] },
-    { featureType: "administrative", elementType: "labels", stylers: [{ visibility: "off" }] },
-    { featureType: "landscape", elementType: "labels", stylers: [{ visibility: "off" }] },
-    { featureType: "water", elementType: "labels", stylers: [{ visibility: "off" }] },
   ];
 
   return (
@@ -89,7 +82,6 @@ export default function EventMap() {
           center={mapCenter}
           zoom={mapZoom}
           style={{ height: "100%", width: "100%", margin: "10px auto", marginTop: "50px" }}
-          styles={hiddenMapStyle}
           disableDefaultUI={true}
           gestureHandling="greedy"
           onCenterChanged={(e) => {
@@ -130,17 +122,19 @@ export default function EventMap() {
                 onClick={() => setSelectedEventId(isSelected ? null : event._id)}
               >
                 <div className="relative">
-                  <div
-                    className={`w-10 h-10 rounded-full border-2 border-white shadow-lg flex items-center justify-center ${
-                      color === "purple"
-                        ? "bg-purple-500"
-                        : color === "green"
-                        ? "bg-green-500"
-                        : color === "red"
-                        ? "bg-red-500"
-                        : "bg-gray-500"
-                    }`}
-                  >
+                                      <div
+                      className={`w-10 h-10 rounded-full border-2 border-white shadow-lg flex items-center justify-center ${
+                        color === "purple"
+                          ? "bg-purple-500"
+                          : color === "green"
+                          ? "bg-green-500"
+                          : color === "orange"
+                          ? "bg-orange-500"
+                          : color === "red"
+                          ? "bg-red-500"
+                          : "bg-gray-500"
+                      }`}
+                    >
                     <Calendar className="w-5 h-5 text-white" />
                   </div>
                   {isSelected && (
@@ -194,6 +188,8 @@ export default function EventMap() {
                       ? "bg-purple-500"
                       : type.color === "green"
                       ? "bg-green-500"
+                      : type.color === "orange"
+                      ? "bg-orange-500"
                       : type.color === "red"
                       ? "bg-red-500"
                       : "bg-gray-500"

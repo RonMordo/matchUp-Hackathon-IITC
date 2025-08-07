@@ -3,7 +3,7 @@ import { EventModel } from "./event.model.js";
 import { CreateEventInput, PatchEventInput } from "./event.types.js";
 
 const getAllEvents = () => {
-  return EventModel.find().select("-__v");
+  return EventModel.find().select("-__v").populate("hobby", "name");
 };
 
 const getEventById = async (id: string) => {
