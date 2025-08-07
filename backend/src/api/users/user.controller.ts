@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from "express";
 import { AuthenticatedRequest, IdParams } from "../../utils/globalTypes.js";
 import { IEvent } from "../events/event.types.js";
 import { CreateMessageInput, IMessage } from "../messages/message.types.js";
+import { notificationService } from "../notifications/notification.service.js";
 
 const getAllUsers = async (
   _req: Request,
@@ -122,6 +123,19 @@ const sendMessage = async (
   }
 };
 
+const toggleReadNotification = async (
+  req: AuthenticatedRequest<IdParams>,
+  res: Response<{ success: boolean }>,
+  next: NextFunction
+) => {
+  try {
+    await notificationService.toggleReadNotification(req.params.id);
+    return res.status(201).json({ success: true });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 export const userController = {
   getAllUsers,
   getUserById,
@@ -132,4 +146,5 @@ export const userController = {
   patchUser,
   deleteUser,
   sendMessage,
+  toggleReadNotification,
 };

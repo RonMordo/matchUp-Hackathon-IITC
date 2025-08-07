@@ -43,6 +43,12 @@ const createHobby = async (
   }
 };
 
+// const createHobbies = async (req: Request, res: Response, next:NextFunction) => {
+//   try {
+//     const hobbies =
+//   }
+// }
+
 const updateHobby = async (
   req: AuthenticatedRequest<IdParams, {}, CreateHobbyInput>,
   res: Response<IHobby>,
