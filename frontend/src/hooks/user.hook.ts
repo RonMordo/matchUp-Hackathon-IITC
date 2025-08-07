@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserService } from "@/services/user.service";
-import type { User, UserResponse } from "@/types/index";
 
 export const useUsers = () => {
   return useQuery({
@@ -81,6 +80,24 @@ export const useDeleteUser = () => {
     mutationFn: UserService.deleteUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+};
+
+export const useUserNotifications = () => {
+  return useQuery({
+    queryKey: ["users", "notifications"],
+    queryFn: UserService.getUserNotifications,
+  });
+};
+
+export const useToggleReadNotification = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: UserService.toggleReadNotification,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users", "notifications"] });
     },
   });
 };

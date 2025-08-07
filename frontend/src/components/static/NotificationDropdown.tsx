@@ -6,45 +6,30 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { IoIosNotifications } from "react-icons/io";
-import { useNotifications, usePatchNotification, useMarkAllNotificationsAsRead } from "@/hooks";
+import { useUserNotifications, useToggleReadNotification } from "@/hooks/user.hook";
 import { useAuth } from "@/context/AuthContext";
 import { formatDistanceToNow } from "date-fns";
+import type { Notification } from "@/types";
 
 export const NotificationDropdown = () => {
   const { user } = useAuth();
-  const { data: notifications, isLoading } = useNotifications();
-  const patchNotification = usePatchNotification();
-  const markAllAsRead = useMarkAllNotificationsAsRead();
+  const { data: notifications, isLoading } = useUserNotifications();
+  const toggleReadNotification = useToggleReadNotification();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Filter notifications for current user
-  const userNotifications = notifications?.filter(
-    (notification) => notification.recipient === user?._id
+  // Filter only unread notifications
+  const unreadNotifications = notifications?.filter(
+    (notification) => notification.status === "unread"
   ) || [];
 
-  const unreadCount = userNotifications.filter(
-    (notification) => notification.status === "unread"
-  ).length;
+  const unreadCount = unreadNotifications.length;
 
-  const handleNotificationClick = async (notification: any) => {
+  const handleNotificationClick = async (notification: Notification) => {
     if (notification.status === "unread") {
       try {
-        await patchNotification.mutateAsync({
-          id: notification._id,
-          data: { status: "read" },
-        });
+        await toggleReadNotification.mutateAsync(notification._id);
       } catch (error) {
-        console.error("Error marking notification as read:", error);
-      }
-    }
-  };
-
-  const handleMarkAllAsRead = async () => {
-    if (user?._id && unreadCount > 0) {
-      try {
-        await markAllAsRead.mutateAsync(user._id);
-      } catch (error) {
-        console.error("Error marking all notifications as read:", error);
+        console.error("Error toggling notification read status:", error);
       }
     }
   };
@@ -60,7 +45,7 @@ export const NotificationDropdown = () => {
     }
   };
 
-  const getNotificationText = (notification: any) => {
+  const getNotificationText = (notification: Notification) => {
     switch (notification.type) {
       case "message":
         return `New message: ${notification.content}`;
@@ -98,13 +83,13 @@ export const NotificationDropdown = () => {
           <div className="p-4 text-center text-gray-500">
             Loading notifications...
           </div>
-        ) : userNotifications.length === 0 ? (
+        ) : unreadNotifications.length === 0 ? (
           <div className="p-4 text-center text-gray-500">
-            No notifications yet
+            No unread notifications
           </div>
         ) : (
           <div className="max-h-80 overflow-y-auto">
-            {userNotifications.map((notification) => (
+            {unreadNotifications.map((notification: Notification) => (
               <DropdownMenuItem
                 key={notification._id}
                 onClick={() => handleNotificationClick(notification)}
@@ -138,18 +123,6 @@ export const NotificationDropdown = () => {
                 </div>
               </DropdownMenuItem>
             ))}
-          </div>
-        )}
-
-        {userNotifications.length > 0 && unreadCount > 0 && (
-          <div className="p-3 border-t border-orange-200 dark:border-orange-700">
-            <button
-              onClick={handleMarkAllAsRead}
-              disabled={markAllAsRead.isPending}
-              className="text-sm text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {markAllAsRead.isPending ? "Marking..." : "Mark all as read"}
-            </button>
           </div>
         )}
       </DropdownMenuContent>

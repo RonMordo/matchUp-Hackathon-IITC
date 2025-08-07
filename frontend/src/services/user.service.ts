@@ -37,4 +37,12 @@ export const UserService = {
   async deleteUser(): Promise<{ message: string }> {
     return await axiosInstance.delete("/users");
   },
+
+  async getUserNotifications(): Promise<any[]> {
+    return await axiosInstance.get("/users/notifications");
+  },
+
+  async toggleReadNotification(id: string): Promise<{ success: boolean }> {
+    return await axiosInstance.patch(`/users/notifications/${id}`);
+  },
 };
